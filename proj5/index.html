@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Test your knowledge in Python, JavaScript, SQL, Linux and more with our comprehensive tech quizzes"
+    />
+    <meta
+      name="keywords"
+      content="programming quiz, tech quiz, python test, javascript quiz, sql practice, linux commands"
+    />
+    <meta name="author" content="TechQuiz" />
+    <meta name="theme-color" content="#4A90E2" />
+    <title>TechQuiz - Master Your Programming Skills</title>
+    <link rel="preload" as="image" href="python-logo.png" />
+    <link rel="preload" as="image" href="javascript-logo.png" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+      <nav role="navigation" aria-label="Main navigation">
+        <div>
+          <h1><abbr title="Technology">Tech</abbr>Quiz</h1>
+          <ul role="menubar">
+            <li role="none"><a href="#home" role="menuitem">Home</a></li>
+            <li role="none"><a href="#topics" role="menuitem">Topics</a></li>
+            <li role="none">
+              <a href="#practice" role="menuitem">Practice</a>
+            </li>
+            <li role="none"><a href="#about" role="menuitem">About</a></li>
+          </ul>
+          <div>
+            <button type="button" aria-haspopup="true">Sign In</button>
+            <dialog id="signin-modal">
+              <form method="dialog">
+                <h2>Sign In</h2>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required autocomplete="email" />
+                <label for="password">Password:</label>
+                <input
+                  type="password"
+                  id="password"
+                  required
+                  autocomplete="current-password"
+                />
+                <button type="submit">Sign In</button>
+                <button value="cancel">Cancel</button>
+              </form>
+            </dialog>
+          </div>
+        </div>
+      </nav>
+
+      <section aria-labelledby="hero-title">
+        <h2 id="hero-title">Master Your Tech Skills</h2>
+        <p>
+          Test your knowledge with our comprehensive quizzes in Python,
+          JavaScript, SQL, Linux, and more.
+        </p>
+        <button type="button">Start Learning</button>
+      </section>
+    </header>
+
+    <main id="main-content" role="main">
+      <section aria-labelledby="sample-quiz">
+        <h2 id="sample-quiz">Try a Sample Quiz</h2>
+        <form id="demo-quiz">
+          <fieldset>
+            <legend>Python Basics Quiz</legend>
+            <div role="radiogroup" aria-labelledby="q1">
+              <p id="q1">What is the output of: print(type(1/2))?</p>
+              <div>
+                <input type="radio" name="q1" id="q1a" value="a" />
+                <label for="q1a">&lt;class 'int'&gt;</label>
+              </div>
+              <div>
+                <input type="radio" name="q1" id="q1b" value="b" />
+                <label for="q1b">&lt;class 'float'&gt;</label>
+              </div>
+              <div>
+                <input type="radio" name="q1" id="q1c" value="c" />
+                <label for="q1c">&lt;class 'number'&gt;</label>
+              </div>
+            </div>
+            <button type="submit">Check Answer</button>
+          </fieldset>
+        </form>
+      </section>
+
+      <section aria-labelledby="topics-title">
+        <h2 id="topics-title">Popular Topics</h2>
+        <div role="list">
+          <article role="listitem">
+            <img
+              src="python.jpg"
+              alt="Python logo"
+              width="64"
+              height="64"
+              loading="lazy"
+            />
+            <h3>Python</h3>
+            <p>Master Python fundamentals through interactive quizzes</p>
+            <details>
+              <summary>Quiz Categories</summary>
+              <ul>
+                <li>Basics</li>
+                <li>Data Structures</li>
+                <li>OOP Concepts</li>
+                <li>Advanced Python</li>
+              </ul>
+            </details>
+            <progress value="0" max="100">0% Complete</progress>
+          </article>
+
+          <article role="listitem">
+            <img
+              src="js.jpg"
+              alt="JavaScript logo"
+              width="64"
+              height="64"
+              loading="lazy"
+            />
+            <h3>JavaScript</h3>
+            <p>Learn modern JavaScript with practical questions</p>
+            <details>
+              <summary>Quiz Categories</summary>
+              <ul>
+                <li>ES6+ Features</li>
+                <li>DOM Manipulation</li>
+                <li>Async Programming</li>
+                <li>React Basics</li>
+              </ul>
+            </details>
+            <progress value="0" max="100">0% Complete</progress>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="progress-title">
+        <h2 id="progress-title">Track Your Progress</h2>
+        <div role="table" aria-label="Learning Progress">
+          <div role="row">
+            <span role="columnheader">Topic</span>
+            <span role="columnheader">Completed</span>
+            <span role="columnheader">Score</span>
+          </div>
+          <div role="row">
+            <span role="cell">Python Basics</span>
+            <span role="cell"
+              ><meter value="7" min="0" max="10">7 out of 10</meter></span
+            >
+            <span role="cell">85%</span>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="signup-title">
+        <h2 id="signup-title">Start Your Learning Journey</h2>
+        <form id="signup-form" autocomplete="on">
+          <label for="fullname">Full Name:</label>
+          <input
+            type="text"
+            id="fullname"
+            name="fullname"
+            required
+            autocomplete="name"
+          />
+
+          <label for="signup-email">Email:</label>
+          <input
+            type="email"
+            id="signup-email"
+            name="email"
+            required
+            autocomplete="email"
+          />
+
+          <fieldset>
+            <legend>Preferred Topics</legend>
+            <div>
+              <input type="checkbox" id="python" name="topics" value="python" />
+              <label for="python">Python</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="javascript"
+                name="topics"
+                value="javascript"
+              />
+              <label for="javascript">JavaScript</label>
+            </div>
+          </fieldset>
+
+          <label for="experience">Experience Level:</label>
+          <select id="experience" name="experience" required>
+            <option value="">Select your level</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+
+          <button type="submit">Get Started</button>
+        </form>
+      </section>
+
+      <aside aria-label="Quiz Statistics">
+        <h2>Live Statistics</h2>
+        <dl>
+          <dt>Active Users</dt>
+          <dd><output id="active-users">1,234</output></dd>
+          <dt>Quizzes Completed Today</dt>
+          <dd><output id="quizzes-completed">5,678</output></dd>
+        </dl>
+      </aside>
+    </main>
+
+    <footer role="contentinfo">
+      <div>
+        <section>
+          <h4>About</h4>
+          <ul>
+            <li><a href="#story">Our Story</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#careers">Careers</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Resources</h4>
+          <nav aria-label="Resource links">
+            <ul>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#docs">Documentation</a></li>
+              <li><a href="#help">Help Center</a></li>
+            </ul>
+          </nav>
+        </section>
+      </div>
+
+      <p>
+        <small>&copy; 2024 TechQuiz. All rights reserved.</small>
+      </p>
+    </footer>
+
+    <noscript>
+      <p>Please enable JavaScript to use all features of TechQuiz.</p>
+    </noscript>
+  </body>
+</html>
