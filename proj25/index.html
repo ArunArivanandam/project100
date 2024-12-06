@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Previous styles remain the same until the number styling */
+      body {
+        background: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .clock {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #ffffff, #e6e6e6);
+        position: relative;
+        padding: 20px;
+        box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.9),
+          8px 8px 15px rgba(0, 0, 0, 0.2),
+          inset 2px 2px 5px rgba(255, 255, 255, 0.5),
+          inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .clock::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: linear-gradient(
+          45deg,
+          transparent 45%,
+          rgba(0, 0, 0, 0.05) 46%,
+          rgba(0, 0, 0, 0.05) 54%,
+          transparent 55%
+        );
+      }
+
+      .clock-face {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background: linear-gradient(145deg, #ffffff, #f5f5f5);
+        border-radius: 50%;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .marker {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        text-align: center;
+      }
+
+      .marker::after {
+        content: "";
+        width: 2px;
+        height: 10px;
+        background: #333;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .marker.hour-marker::after {
+        height: 15px;
+        width: 4px;
+        background: #111;
+      }
+
+      /* Updated number styling */
+      .number {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 40px;
+        height: 40px;
+        margin: -20px;
+        text-align: center;
+        font-size: 20px;
+        font-family: "Arial", sans-serif;
+        font-weight: 600;
+        color: #333;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+        line-height: 40px;
+      }
+
+      .center-dot {
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(145deg, #333, #666);
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .center-dot::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background: #888;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .hand {
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform-origin: bottom;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(90deg, #333, #666);
+      }
+
+      .hour-hand {
+        width: 8px;
+        height: 70px;
+        background: linear-gradient(90deg, #333, #666);
+      }
+
+      .minute-hand {
+        width: 6px;
+        height: 90px;
+        background: linear-gradient(90deg, #666, #999);
+      }
+
+      .second-hand {
+        width: 2px;
+        height: 100px;
+        background: #cc0000;
+        box-shadow: 0 0 3px rgba(204, 0, 0, 0.2);
+      }
+
+      .brand {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        top: 75px;
+        font-family: "Arial", sans-serif;
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="clock-face">
+        <div class="brand">Chronograph</div>
+        <!-- Numbers will be added via JavaScript -->
+        <div class="hand hour-hand"></div>
+        <div class="hand minute-hand"></div>
+        <div class="hand second-hand"></div>
+        <div class="center-dot"></div>
+      </div>
+    </div>
+
+    <script>
+      // Function to create clock numbers with correct positioning
+      function createClockNumbers() {
+        const clockFace = document.querySelector(".clock-face");
+        const radius = 120; // Adjust this value to position numbers closer or further from center
+
+        for (let i = 1; i <= 12; i++) {
+          const number = document.createElement("div");
+          number.className = "number";
+          number.textContent = i;
+
+          // Calculate position using trigonometry
+          const angle = (i * 30 - 90) * (Math.PI / 180); // Convert to radians and offset by 90 degrees
+          const x = radius * Math.cos(angle);
+          const y = radius * Math.sin(angle);
+
+          number.style.transform = `translate(${x}px, ${y}px)`;
+          clockFace.appendChild(number);
+        }
+      }
+
+      // Generate minute markers
+      function createMarkers() {
+        const clockFace = document.querySelector(".clock-face");
+        for (let i = 0; i < 60; i++) {
+          const marker = document.createElement("div");
+          marker.className = "marker" + (i % 5 === 0 ? " hour-marker" : "");
+          marker.style.transform = `rotate(${i * 6}deg)`;
+          clockFace.appendChild(marker);
+        }
+      }
+
+      function updateClock() {
+        const now = new Date();
+        const hours = now.getHours() % 12;
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const milliseconds = now.getMilliseconds();
+
+        // Calculate angles with millisecond precision for smooth movement
+        const hourDeg = hours * 30 + minutes * 0.5 + seconds * 0.0083;
+        const minuteDeg = minutes * 6 + seconds * 0.1;
+        const secondDeg = seconds * 6 + milliseconds * 0.006;
+
+        const hourHand = document.querySelector(".hour-hand");
+        const minuteHand = document.querySelector(".minute-hand");
+        const secondHand = document.querySelector(".second-hand");
+
+        hourHand.style.transform = `translate(-50%, 0) rotate(${hourDeg}deg)`;
+        minuteHand.style.transform = `translate(-50%, 0) rotate(${minuteDeg}deg)`;
+        secondHand.style.transform = `translate(-50%, 0) rotate(${secondDeg}deg)`;
+      }
+
+      // Initialize clock
+      createMarkers();
+      createClockNumbers();
+      setInterval(updateClock, 50);
+      updateClock();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Card Grid</title>
+    <style>
+      /* Reset and base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        padding: 2rem;
+        background-color: #f5f5f5;
+      }
+
+      /* Product grid container */
+      .product-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Product card */
+      .product-card {
+        flex: 1 1 300px;
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .product-card:hover {
+        transform: translateY(-0.5rem);
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+      }
+
+      /* Product image container */
+      .product-image {
+        width: 100%;
+        height: 15rem;
+        overflow: hidden;
+      }
+
+      .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .product-card:hover .product-image img {
+        transform: scale(1.05);
+      }
+
+      /* Product content */
+      .product-content {
+        padding: 1.5rem;
+      }
+
+      .product-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+
+      .product-description {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 1rem;
+      }
+
+      .product-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2c5282;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem;
+        }
+
+        .product-grid {
+          gap: 1rem;
+        }
+
+        .product-card {
+          flex: 1 1 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="product-grid">
+      <!-- Product Card 1 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="headphone.jpg" alt="Product 1" />
+        </div>
+        <div class="product-content">
+          <h2 class="product-title">Wireless Headphones</h2>
+          <p class="product-description">
+            High-quality wireless headphones with noise cancellation and 20-hour
+            battery life.
+          </p>
+          <div class="product-price">$199.99</div>
+        </div>
+      </div>
+
+      <!-- Product Card 2 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="watch.jpg" alt="Product 2" />
+        </div>
+        <div class="product-content">
+          <h2 class="product-title">Smart Watch</h2>
+          <p class="product-description">
+            Feature-rich smartwatch with heart rate monitoring and GPS tracking.
+          </p>
+          <div class="product-price">$299.99</div>
+        </div>
+      </div>
+
+      <!-- Product Card 3 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="speaker.jpg" alt="Product 3" />
+        </div>
+        <div class="product-content">
+          <h2 class="product-title">Bluetooth Speaker</h2>
+          <p class="product-description">
+            Portable speaker with 360-degree sound and waterproof design.
+          </p>
+          <div class="product-price">$149.99</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="TechQuiz - Master your tech skills with interactive quizzes in Python, JavaScript, SQL, Linux, and more."
+    />
+    <title>TechQuiz - Interactive Technology Learning Platform</title>
+    <style>
+      /* Reset and Base Styles */
+      :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --text-color: #1f2937;
+        --background-color: #ffffff;
+        --error-color: #dc2626;
+        --success-color: #059669;
+        --border-radius: 0.375rem;
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-color);
+      }
+
+      /* Accessibility */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        padding: 8px;
+        background-color: var(--primary-color);
+        color: white;
+        z-index: 100;
+        transition: var(--transition);
+      }
+
+      .skip-link:focus {
+        top: 0;
+      }
+
+      /* Header and Navigation */
+      [role="banner"] {
+        background-color: var(--background-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      [role="banner"] > div {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      [role="menuitem"] {
+        text-decoration: none;
+        color: var(--text-color);
+        padding: 0.5rem 1rem;
+        margin: 0 0.25rem;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+
+      [role="menuitem"]:hover,
+      [role="menuitem"]:focus {
+        background-color: rgba(37, 99, 235, 0.1);
+        color: var(--primary-color);
+      }
+
+      /* Hero Section */
+      [aria-labelledby="hero-title"] {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 4rem 2rem;
+        text-align: center;
+      }
+
+      #hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Quiz Section */
+      [aria-labelledby="sample-quiz"] {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #f8fafc;
+        border-radius: var(--border-radius);
+      }
+
+      [role="radiogroup"] {
+        margin: 1.5rem 0;
+      }
+
+      [role="radiogroup"] > div {
+        margin: 1rem 0;
+        padding: 1rem;
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      [role="radiogroup"] > div:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Topics Grid */
+      [role="list"] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+      }
+
+      /* Progress Table */
+      [role="table"] {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+      }
+
+      [role="row"] {
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      [role="columnheader"],
+      [role="cell"] {
+        padding: 1rem;
+        text-align: left;
+      }
+
+      /* Forms */
+      input,
+      select {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        border: 1px solid #e5e7eb;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      button {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      button:hover {
+        background-color: var(--secondary-color);
+      }
+
+      /* Footer */
+      footer {
+        background-color: #f8fafc;
+        padding: 3rem 2rem;
+        margin-top: 4rem;
+      }
+
+      footer > div {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+      }
+
+      .section h4 {
+        color: var(--text-color);
+        margin-bottom: 1rem;
+      }
+
+      .section a {
+        color: #4b5563;
+        text-decoration: none;
+        display: block;
+        margin: 0.5rem 0;
+        transition: var(--transition);
+      }
+
+      .section a:hover {
+        color: var(--primary-color);
+      }
+
+      .small {
+        font-size: 0.875rem;
+        color: #6b7280;
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        [role="banner"] > div {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        #hero-title {
+          font-size: 2rem;
+        }
+
+        [role="list"] {
+          grid-template-columns: 1fr;
+        }
+
+        [role="table"] {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+
+      /* Dark Mode Support */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --text-color: #f3f4f6;
+          --background-color: #1f2937;
+        }
+
+        [role="banner"] {
+          background-color: #111827;
+        }
+
+        [role="radiogroup"] > div {
+          background-color: #374151;
+          border-color: #4b5563;
+        }
+
+        [aria-labelledby="sample-quiz"] {
+          background-color: #374151;
+        }
+
+        footer {
+          background-color: #111827;
+        }
+
+        .section a {
+          color: #d1d5db;
+        }
+
+        input,
+        select {
+          background-color: #374151;
+          border-color: #4b5563;
+          color: var(--text-color);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+      <div>
+        <h1>TechQuiz</h1>
+        <nav>
+          <a href="#home" role="menuitem">Home</a>
+          <a href="#topics" role="menuitem">Topics</a>
+          <a href="#practice" role="menuitem">Practice</a>
+          <a href="#about" role="menuitem">About</a>
+        </nav>
+        <div>
+          <button onclick="document.getElementById('signin-modal').showModal()">
+            Sign In
+          </button>
+          <dialog id="signin-modal">
+            <h2>Sign In</h2>
+            <form method="dialog">
+              <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required />
+              </div>
+              <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" required />
+              </div>
+              <button type="submit">Sign In</button>
+              <button type="button">Cancel</button>
+            </form>
+          </dialog>
+        </div>
+      </div>
+    </header>
+
+    <section aria-labelledby="hero-title">
+      <h2 id="hero-title">Master Your Tech Skills</h2>
+      <p>
+        Test your knowledge with our comprehensive quizzes in Python,
+        JavaScript, SQL, Linux, and more.
+      </p>
+      <button>Start Learning</button>
+    </section>
+
+    <main id="main-content" role="main">
+      <section aria-labelledby="sample-quiz">
+        <h2 id="sample-quiz">Try a Sample Quiz</h2>
+        <p>Python Basics Quiz</p>
+        <div role="radiogroup" aria-labelledby="q1">
+          <p id="q1">What is the output of: print(type(1/2))?</p>
+          <div>
+            <input type="radio" name="q1" id="q1a" value="int" />
+            <label for="q1a">&lt;class 'int'&gt;</label>
+          </div>
+          <div>
+            <input type="radio" name="q1" id="q1b" value="float" />
+            <label for="q1b">&lt;class 'float'&gt;</label>
+          </div>
+          <div>
+            <input type="radio" name="q1" id="q1c" value="number" />
+            <label for="q1c">&lt;class 'number'&gt;</label>
+          </div>
+        </div>
+        <button>Check Answer</button>
+      </section>
+
+      <section aria-labelledby="topics-title">
+        <h2 id="topics-title">Popular Topics</h2>
+        <div role="list">
+          <article>
+            <img
+              src="python.jpg"
+              width="64"
+              height="64"
+              alt="Python logo"
+              loading="lazy"
+            />
+            <h3>Python</h3>
+            <p>Master Python fundamentals through interactive quizzes</p>
+            <h4>Quiz Categories</h4>
+            <ul>
+              <li>Basics</li>
+              <li>Data Structures</li>
+              <li>OOP Concepts</li>
+              <li>Advanced Python</li>
+            </ul>
+            <p>0% Complete</p>
+          </article>
+          <article>
+            <img
+              src="js.jpg"
+              width="64"
+              height="64"
+              alt="JavaScript logo"
+              loading="lazy"
+            />
+            <h3>JavaScript</h3>
+            <p>Learn modern JavaScript with practical questions</p>
+            <h4>Quiz Categories</h4>
+            <ul>
+              <li>ES6+ Features</li>
+              <li>DOM Manipulation</li>
+              <li>Async Programming</li>
+              <li>React Basics</li>
+            </ul>
+            <p>0% Complete</p>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="progress-title">
+        <h2 id="progress-title">Track Your Progress</h2>
+        <div role="table" aria-label="Learning Progress">
+          <div role="row">
+            <span role="columnheader">Topic</span>
+            <span role="columnheader">Completed</span>
+            <span role="columnheader">Score</span>
+          </div>
+          <div role="row">
+            <span role="cell">Python Basics</span>
+            <span role="cell">7 out of 10</span>
+            <span role="cell">85%</span>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="signup-title">
+        <h2 id="signup-title">Start Your Learning Journey</h2>
+        <form>
+          <div>
+            <label for="fullname">Full Name:</label>
+            <input type="text" id="fullname" required />
+          </div>
+          <div>
+            <label for="signup-email">Email:</label>
+            <input type="email" id="signup-email" required />
+          </div>
+          <fieldset>
+            <legend>Preferred Topics</legend>
+            <div>
+              <input type="checkbox" id="python" name="topics" value="python" />
+              <label for="python">Python</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="javascript"
+                name="topics"
+                value="javascript"
+              />
+              <label for="javascript">JavaScript</label>
+            </div>
+          </fieldset>
+          <div>
+            <label for="experience">Experience Level:</label>
+            <select id="experience" required>
+              <option value="">Select your level</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+          <button type="submit">Get Started</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Live Statistics</h2>
+        <dl>
+          <dt>Active Users</dt>
+          <dd>1,234</dd>
+          <dt>Quizzes Completed Today</dt>
+          <dd>5,678</dd>
+        </dl>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <section class="section">
+          <h4>About</h4>
+          <a href="#story">Our Story</a>
+          <a href="#team">Team</a>
+          <a href="#careers">Careers</a>
+        </section>
+        <section class="section">
+          <h4>Resources</h4>
+          <a href="#blog">Blog</a>
+          <a href="#docs">Documentation</a>
+          <a href="#help">Help Center</a>
+        </section>
+      </div>
+      <p class="small">© 2024 TechQuiz. All rights reserved.</p>
+      <p class="small">© 2024 TechQuiz. All rights reserved.</p>
+    </footer>
+
+    <noscript>
+      <div class="warning">
+        Please enable JavaScript to use all features of TechQuiz.
+      </div>
+    </noscript>
+
+    <script>
+      // Handle dark mode toggle
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.classList.add("dark-mode");
+      }
+
+      // Handle sign-in modal
+      const modal = document.getElementById("signin-modal");
+      const closeButtons = modal.querySelectorAll('button[type="button"]');
+      closeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          modal.close();
+        });
+      });
+
+      // Handle quiz submission
+      const quizForm = document.querySelector('[role="radiogroup"]');
+      const checkButton = quizForm?.nextElementSibling;
+      if (checkButton) {
+        checkButton.addEventListener("click", () => {
+          const selected = quizForm.querySelector("input:checked");
+          if (selected) {
+            // Correct answer is 'float'
+            const isCorrect = selected.value === "float";
+            alert(
+              isCorrect
+                ? "Correct! Division always returns a float in Python 3."
+                : "Try again! Think about Python 3 division rules."
+            );
+          } else {
+            alert("Please select an answer first!");
+          }
+        });
+      }
+
+      // Form validation enhancement
+      const signupForm = document.querySelector("form");
+      signupForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const topics = document.querySelectorAll(
+          'input[name="topics"]:checked'
+        );
+        if (topics.length === 0) {
+          alert("Please select at least one topic!");
+          return;
+        }
+        alert("Thanks for signing up! We'll be in touch soon.");
+      });
+    </script>
+  </body>
+</html>

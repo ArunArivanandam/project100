@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culinary Delights: Recipe Collection</title>
+    <style>
+      /* Reset and base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Georgia", serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: #fafafa;
+      }
+
+      /* Typography */
+      h1 {
+        font-size: 2.5rem;
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: normal;
+      }
+
+      h2 {
+        font-size: 2rem;
+        color: #e67e22;
+        margin: 2rem 0 1rem;
+        border-bottom: 2px solid #e67e22;
+        padding-bottom: 0.5rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin: 1.5rem 0 1rem;
+      }
+
+      p {
+        margin-bottom: 1rem;
+      }
+
+      em {
+        font-style: italic;
+        color: #666;
+      }
+
+      /* Images and figures */
+      figure {
+        margin: 2rem 0;
+        text-align: center;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      img:hover {
+        transform: scale(1.02);
+      }
+
+      figcaption {
+        margin-top: 1rem;
+        font-style: italic;
+        color: #666;
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      th,
+      td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      /* Instructions and lists */
+      .preparation-steps {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      ol {
+        padding-left: 1.5rem;
+        margin: 1rem 0;
+      }
+
+      li {
+        margin-bottom: 0.5rem;
+        position: relative;
+        padding-left: 0.5rem;
+      }
+
+      /* Chef's tip highlight */
+      .mark {
+        background-color: #ffeaa7;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+
+      /* Recipe cards */
+      section {
+        margin: 3rem 0;
+        padding: 2rem;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+      }
+
+      section:hover {
+        transform: translateY(-5px);
+      }
+
+      /* Navigation */
+      nav {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+      }
+
+      nav a {
+        color: #2c3e50;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      nav a:hover {
+        color: #e67e22;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        h2 {
+          font-size: 1.75rem;
+        }
+
+        h3 {
+          font-size: 1.25rem;
+        }
+
+        section {
+          padding: 1rem;
+        }
+
+        table {
+          display: block;
+          overflow-x: auto;
+        }
+
+        nav ul {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+      }
+
+      /* Print styles */
+      @media print {
+        body {
+          background: none;
+          color: black;
+        }
+
+        section {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+
+        img {
+          max-width: 300px;
+        }
+
+        nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#pancakes">Pancakes</a></li>
+        <li><a href="#caesar-salad">Caesar Salad</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <h1>Culinary Delights: Recipe Collection</h1>
+      <em
+        >A collection of family favorite recipes passed down through
+        generations</em
+      >
+
+      <section id="pancakes">
+        <h2>Classic Fluffy Pancakes</h2>
+
+        <figure>
+          <img
+            src="pancake.jpg"
+            width="300"
+            alt="Stack of fluffy pancakes with maple syrup"
+          />
+          <figcaption>
+            Homemade fluffy pancakes drizzled with pure maple syrup
+          </figcaption>
+        </figure>
+
+        <section>
+          <h3>Description</h3>
+          <p>
+            Light and fluffy pancakes that are perfect for a weekend breakfast.
+            These pancakes have a golden-brown exterior and are incredibly soft
+            inside.
+          </p>
+        </section>
+
+        <section>
+          <h3>Ingredients</h3>
+          <table>
+            <caption>
+              Dry Ingredients
+            </caption>
+            <tr>
+              <th>Ingredient</th>
+              <th>Amount</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <td>All-purpose flour</td>
+              <td>1½ cups</td>
+              <td>Sifted</td>
+            </tr>
+            <tr>
+              <td>Baking powder</td>
+              <td>3½ teaspoons</td>
+              <td>Fresh, not expired</td>
+            </tr>
+            <tr>
+              <td>Salt</td>
+              <td>¼ teaspoon</td>
+              <td>Table salt</td>
+            </tr>
+            <tr>
+              <td>Sugar</td>
+              <td>1 tablespoon</td>
+              <td>Granulated</td>
+            </tr>
+          </table>
+
+          <table>
+            <caption>
+              Wet Ingredients
+            </caption>
+            <tr>
+              <th>Ingredient</th>
+              <th>Amount</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <td>Milk</td>
+              <td>1¼ cups</td>
+              <td>Room temperature</td>
+            </tr>
+            <tr>
+              <td>Egg</td>
+              <td>1 large</td>
+              <td>Room temperature</td>
+            </tr>
+            <tr>
+              <td>Butter</td>
+              <td>3 tablespoons</td>
+              <td>Melted and cooled</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Instructions</h3>
+          <p>
+            <span class="mark">Chef's Tip:</span> Let the batter rest for 5
+            minutes before cooking for the fluffiest results!
+          </p>
+          <ol>
+            <li>
+              In a large bowl, sift together the flour, baking powder, salt, and
+              sugar.
+            </li>
+            <li>
+              Make a well in the center and pour in the milk, egg, and melted
+              butter.
+            </li>
+            <li>Mix until smooth, being careful not to overmix.</li>
+            <li>
+              Heat a lightly oiled griddle or frying pan over medium-high heat.
+            </li>
+            <li>Pour approximately ¼ cup batter for each pancake.</li>
+            <li>Cook until bubbles form on the surface.</li>
+            <li>Flip and cook until browned on the other side.</li>
+          </ol>
+        </section>
+      </section>
+
+      <section id="caesar-salad">
+        <h2>Caesar Salad</h2>
+
+        <figure>
+          <img
+            src="salad.jpg"
+            width="300"
+            alt="Fresh Caesar salad with croutons"
+          />
+          <figcaption>
+            Fresh and crispy Caesar salad with homemade dressing
+          </figcaption>
+        </figure>
+
+        <section>
+          <h3>Description</h3>
+          <p>
+            A classic Caesar salad with crisp romaine lettuce, homemade
+            croutons, and a rich, creamy dressing.
+          </p>
+        </section>
+
+        <section>
+          <h3>Ingredients</h3>
+          <table>
+            <caption>
+              Salad Base
+            </caption>
+            <tr>
+              <th>Ingredient</th>
+              <th>Amount</th>
+              <th>Preparation</th>
+            </tr>
+            <tr>
+              <td>Romaine lettuce</td>
+              <td>2 heads</td>
+              <td>Chopped into bite-sized pieces</td>
+            </tr>
+            <tr>
+              <td>Croutons</td>
+              <td>1 cup</td>
+              <td>Homemade or store-bought</td>
+            </tr>
+            <tr>
+              <td>Parmesan cheese</td>
+              <td>½ cup</td>
+              <td>Freshly grated</td>
+            </tr>
+          </table>
+
+          <table>
+            <caption>
+              Dressing
+            </caption>
+            <tr>
+              <th>Ingredient</th>
+              <th>Amount</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <td>Garlic</td>
+              <td>2 cloves</td>
+              <td>Finely minced</td>
+            </tr>
+            <tr>
+              <td>Dijon mustard</td>
+              <td>1 teaspoon</td>
+              <td>Whole grain or smooth</td>
+            </tr>
+            <tr>
+              <td>Worcestershire sauce</td>
+              <td>1 teaspoon</td>
+              <td>Original variety</td>
+            </tr>
+            <tr>
+              <td>Mayonnaise</td>
+              <td>½ cup</td>
+              <td>Full-fat recommended</td>
+            </tr>
+            <tr>
+              <td>Salt and pepper</td>
+              <td>To taste</td>
+              <td>Freshly ground black pepper</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Instructions</h3>
+          <div class="preparation-steps">
+            <h4>Prepare the Dressing:</h4>
+            <ol>
+              <li>
+                In a bowl, whisk together minced garlic and Dijon mustard.
+              </li>
+              <li>Add Worcestershire sauce and mayonnaise.</li>
+              <li>Season with salt and pepper.</li>
+              <li>Whisk until smooth and creamy.</li>
+            </ol>
+
+            <h4>Assemble the Salad:</h4>
+            <ol>
+              <li>Wash and chop romaine lettuce into bite-sized pieces.</li>
+              <li>In a large bowl, toss lettuce with dressing.</li>
+              <li>Add croutons and half the Parmesan.</li>
+              <li>Toss gently to combine.</li>
+              <li>Top with remaining Parmesan.</li>
+            </ol>
+          </div>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

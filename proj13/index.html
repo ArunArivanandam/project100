@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Headphones - E-commerce</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2980b9;
+        --text-color: #333;
+        --light-gray: #f4f4f4;
+        --border-radius: 8px;
+      }
+
+      body {
+        background-color: var(--light-gray);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .product {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Image Gallery */
+      .product-gallery {
+        position: relative;
+      }
+
+      .main-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+      }
+
+      .main-image:hover {
+        transform: scale(1.02);
+      }
+
+      .thumbnail-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+      }
+
+      .thumbnail {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: calc(var(--border-radius) / 2);
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+      }
+
+      .thumbnail:hover {
+        opacity: 0.8;
+      }
+
+      /* Product Info */
+      .product-info h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+
+      .price {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 1.2rem;
+      }
+
+      .discount {
+        background: #e74c3c;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+      }
+
+      .description {
+        margin: 1.5rem 0;
+        color: #666;
+        line-height: 1.8;
+      }
+
+      .features {
+        margin: 1.5rem 0;
+      }
+
+      .features h3 {
+        margin-bottom: 0.5rem;
+      }
+
+      .feature-list {
+        list-style: none;
+      }
+
+      .feature-list li {
+        margin: 0.5rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .feature-list li::before {
+        content: "✓";
+        color: var(--primary-color);
+        position: absolute;
+        left: 0;
+      }
+
+      /* Add to Cart Section */
+      .add-to-cart {
+        margin-top: 2rem;
+      }
+
+      .quantity {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .quantity button {
+        background: var(--light-gray);
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .quantity button:hover {
+        background: #e0e0e0;
+      }
+
+      .quantity span {
+        font-size: 1.2rem;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .cart-button {
+        width: 100%;
+        padding: 1rem;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .cart-button:hover {
+        background: var(--secondary-color);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .product {
+          grid-template-columns: 1fr;
+        }
+
+        .main-image {
+          height: 300px;
+        }
+
+        .thumbnail {
+          height: 60px;
+        }
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .product {
+        animation: fadeIn 0.8s ease-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="product">
+        <div class="product-gallery">
+          <img
+            src="headphone.jpg"
+            alt="Premium Headphones"
+            class="main-image"
+          />
+          <div class="thumbnail-container">
+            <img src="headphone.jpg" alt="Thumbnail 1" class="thumbnail" />
+            <img src="headphone.jpg" alt="Thumbnail 2" class="thumbnail" />
+            <img src="headphone.jpg" alt="Thumbnail 3" class="thumbnail" />
+            <img src="headphone.jpg" alt="Thumbnail 4" class="thumbnail" />
+          </div>
+        </div>
+        <div class="product-info">
+          <h1>Premium Wireless Headphones</h1>
+          <div class="price">
+            <span>$199.99</span>
+            <span class="original-price">$299.99</span>
+            <span class="discount">-33%</span>
+          </div>
+          <p class="description">
+            Experience crystal-clear sound with our premium wireless headphones.
+            Featuring advanced noise cancellation technology, comfortable
+            over-ear design, and up to 30 hours of battery life. Perfect for
+            music lovers and professionals alike.
+          </p>
+          <div class="features">
+            <h3>Key Features</h3>
+            <ul class="feature-list">
+              <li>Active Noise Cancellation</li>
+              <li>30-hour Battery Life</li>
+              <li>Bluetooth 5.0 Technology</li>
+              <li>Premium Sound Quality</li>
+              <li>Comfortable Memory Foam Ear Cups</li>
+            </ul>
+          </div>
+          <div class="add-to-cart">
+            <div class="quantity">
+              <button>-</button>
+              <span>1</span>
+              <button>+</button>
+            </div>
+            <button class="cart-button">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

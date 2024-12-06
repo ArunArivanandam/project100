@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obsidian Theme Demo</title>
+    <style>
+      :root {
+        --background-primary: #ffffff;
+        --background-secondary: #f5f6f8;
+        --background-secondary-alt: #e3e5e8;
+        --text-normal: #2e3338;
+        --text-muted: #6e7681;
+        --text-faint: #999999;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background-primary: #1e2227;
+          --background-secondary: #161920;
+          --background-secondary-alt: #0d1117;
+          --text-normal: #dcddde;
+          --text-muted: #a3a6ac;
+          --text-faint: #666666;
+        }
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 2rem;
+        background: var(--background-primary);
+        color: var(--text-normal);
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: var(--text-normal);
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+      }
+
+      h1 {
+        font-size: 2em;
+        border-bottom: 2px solid var(--background-secondary-alt);
+        padding-bottom: 0.3em;
+      }
+
+      h2 {
+        font-size: 1.5em;
+      }
+      h3 {
+        font-size: 1.25em;
+      }
+
+      p {
+        margin: 1em 0;
+      }
+
+      .internal-link {
+        color: #5e81ac;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .internal-link:hover {
+        color: #81a1c1;
+        text-decoration: underline;
+      }
+
+      .tag {
+        background-color: var(--background-secondary-alt);
+        border-radius: 4px;
+        padding: 2px 6px;
+        color: var(--text-muted);
+        font-size: 0.9em;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+      }
+
+      .tag:hover {
+        background-color: var(--background-secondary);
+        color: var(--text-normal);
+      }
+
+      code {
+        font-family: "Fira Code", monospace;
+        font-size: 0.9em;
+        background-color: var(--background-secondary);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+      }
+
+      pre {
+        background-color: var(--background-secondary);
+        padding: 1em;
+        border-radius: 6px;
+        margin: 1em 0;
+        overflow-x: auto;
+      }
+
+      blockquote {
+        border-left: 4px solid var(--text-muted);
+        margin: 1em 0;
+        padding-left: 1em;
+        color: var(--text-muted);
+      }
+
+      ul,
+      ol {
+        padding-left: 1.5em;
+        margin: 0.5em 0;
+      }
+
+      li {
+        margin: 0.3em 0;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 1em 0;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid var(--background-secondary-alt);
+        padding: 0.5em;
+        text-align: left;
+      }
+
+      th {
+        background-color: var(--background-secondary);
+        font-weight: 600;
+      }
+
+      .note-important {
+        background-color: rgba(237, 135, 150, 0.1);
+        border-left: 4px solid #ed8796;
+        padding: 1em;
+        margin: 1em 0;
+        border-radius: 4px;
+      }
+
+      .note-info {
+        background-color: rgba(140, 170, 238, 0.1);
+        border-left: 4px solid #8caaee;
+        padding: 1em;
+        margin: 1em 0;
+        border-radius: 4px;
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin: 0.5em 0;
+      }
+
+      .task-list-item-checkbox {
+        margin-right: 0.5em;
+      }
+
+      .is-checked {
+        color: var(--text-muted);
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Obsidian Theme Demo</h1>
+
+      <h2>Basic Formatting</h2>
+      <p>
+        This is a demonstration of the Obsidian theme styling. Here's an
+        <a href="#" class="internal-link">internal link</a> and a
+        <a href="#" class="tag">#tag</a>.
+      </p>
+
+      <h3>Code Blocks</h3>
+      <p>
+        Inline code looks like this: <code>console.log('Hello World')</code>
+      </p>
+      <pre><code>// A code block
+function greet(name) {
+    return `Hello, ${name}!`;
+}</code></pre>
+
+      <h3>Blockquotes</h3>
+      <blockquote>
+        This is a blockquote. It can contain multiple lines and is styled with a
+        left border.
+      </blockquote>
+
+      <h3>Lists</h3>
+      <ul>
+        <li>Unordered list item 1</li>
+        <li>Unordered list item 2</li>
+        <li>Unordered list item 3</li>
+      </ul>
+
+      <ol>
+        <li>Ordered list item 1</li>
+        <li>Ordered list item 2</li>
+        <li>Ordered list item 3</li>
+      </ol>
+
+      <h3>Task Lists</h3>
+      <div class="checkbox-container">
+        <input type="checkbox" class="task-list-item-checkbox" checked />
+        <span class="is-checked">Completed task</span>
+      </div>
+      <div class="checkbox-container">
+        <input type="checkbox" class="task-list-item-checkbox" />
+        <span>Incomplete task</span>
+      </div>
+
+      <h3>Tables</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Header 1</th>
+            <th>Header 2</th>
+            <th>Header 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Row 1, Cell 1</td>
+            <td>Row 1, Cell 2</td>
+            <td>Row 1, Cell 3</td>
+          </tr>
+          <tr>
+            <td>Row 2, Cell 1</td>
+            <td>Row 2, Cell 2</td>
+            <td>Row 2, Cell 3</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Callouts</h3>
+      <div class="note-important">
+        <p>
+          This is an important note callout. It's highlighted with a red accent.
+        </p>
+      </div>
+
+      <div class="note-info">
+        <p>
+          This is an info note callout. It's highlighted with a blue accent.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

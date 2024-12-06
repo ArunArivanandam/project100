@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      :root {
+        --terminal-green: #4af626;
+        --terminal-bg: #1a1a1a;
+        --terminal-shadow: rgba(74, 246, 38, 0.2);
+        --terminal-font: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+        --scrollbar-color: #2a2a2a;
+      }
+
+      body {
+        background: #2a2a2a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: var(--terminal-font);
+      }
+
+      .terminal-container {
+        background: var(--terminal-bg);
+        width: 800px;
+        height: 500px;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .terminal-header {
+        background: #2a2a2a;
+        padding: 8px 16px;
+        border-radius: 8px 8px 0 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .window-button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 4px;
+      }
+
+      .close {
+        background: #ff5f56;
+      }
+      .minimize {
+        background: #ffbd2e;
+      }
+      .maximize {
+        background: #27c93f;
+      }
+
+      .title {
+        color: #808080;
+        font-size: 14px;
+        margin-left: 16px;
+      }
+
+      .terminal-body {
+        display: flex;
+        flex: 1;
+      }
+
+      .sidebar {
+        width: 4px;
+        background: var(--terminal-green);
+        animation: pulse 2s ease-in-out infinite;
+        opacity: 0.5;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.2;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      .terminal {
+        padding: 20px;
+        color: var(--terminal-green);
+        font-size: 15px;
+        line-height: 1.5;
+        flex: 1;
+        overflow-y: auto;
+        position: relative;
+      }
+
+      /* Fixed scrollbar styling */
+      .terminal::-webkit-scrollbar {
+        width: 8px;
+        background: var(--scrollbar-color);
+      }
+
+      .terminal::-webkit-scrollbar-thumb {
+        background: #404040;
+        border-radius: 4px;
+      }
+
+      .terminal::-webkit-scrollbar-track {
+        background: var(--scrollbar-color);
+      }
+
+      .terminal::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.15),
+          rgba(0, 0, 0, 0.15) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+        pointer-events: none;
+        animation: scan 0.5s linear infinite;
+      }
+
+      .terminal::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(74, 246, 38, 0.05) 0%,
+          rgba(74, 246, 38, 0) 90%
+        );
+        pointer-events: none;
+      }
+
+      .prompt {
+        display: inline-block;
+        color: #4af626;
+        margin-right: 8px;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 8px;
+        height: 15px;
+        background: var(--terminal-green);
+        animation: blink 1s step-end infinite;
+        vertical-align: middle;
+        opacity: 0.8;
+      }
+
+      @keyframes scan {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(2px);
+        }
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      .output-line {
+        margin: 8px 0;
+        opacity: 0;
+        animation: fadeIn 0.3s forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(2px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .highlight {
+        color: #fff;
+        font-weight: 500;
+      }
+
+      .success {
+        color: #27c93f;
+      }
+      .warning {
+        color: #ffbd2e;
+      }
+      .error {
+        color: #ff5f56;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="terminal-container">
+      <div class="terminal-header">
+        <div class="window-button close"></div>
+        <div class="window-button minimize"></div>
+        <div class="window-button maximize"></div>
+        <span class="title">Terminal</span>
+      </div>
+      <div class="terminal-body">
+        <div class="sidebar"></div>
+        <div class="terminal">
+          <div class="output-line">
+            System initialized - Secure Shell v3.2.1
+          </div>
+          <div class="output-line success">✓ Connection established</div>
+          <div class="output-line">
+            Last login: Fri Dec 06 2024 09:23:45 GMT
+          </div>
+          <div class="output-line">Welcome to SecureTerminal™ Professional</div>
+          <div class="output-line">Type 'help' for available commands</div>
+          <br />
+          <span class="prompt">$</span>
+          <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

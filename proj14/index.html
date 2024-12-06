@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Professional Portfolio</title>
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #2a2a2a;
+        --accent-color: #4a90e2;
+        --text-color: #333;
+        --light-bg: #f5f5f5;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        min-height: 100vh;
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      section {
+        background: rgba(255, 255, 255, 0.95);
+        margin: 2rem auto;
+        padding: 3rem;
+        border-radius: 15px;
+        max-width: 1200px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Header Styles */
+      header {
+        background: var(--primary-color);
+        padding: 1rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent-color);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Hero Section with Gradient Animation */
+      .hero {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        padding: 2rem;
+        margin-top: 60px;
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .hero-content {
+        max-width: 800px;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        color: white;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        color: white;
+        margin-bottom: 2rem;
+      }
+
+      /* Projects Grid with Hover Effects */
+      .projects {
+        padding: 4rem 2rem;
+        background: var(--light-bg);
+      }
+
+      .projects h2 {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .project-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .project-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .project-image {
+        width: 100%;
+        height: 200px;
+        background: #ddd;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .project-content {
+        padding: 1.5rem;
+      }
+
+      /* Hero Section */
+      .hero {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: transparent;
+        margin-top: 60px;
+        animation: slideIn 1s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      /* Enhanced Skills Section with 3D Cards */
+      .skills-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        perspective: 1000px;
+      }
+
+      .skill-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+      }
+
+      .skill-card:hover {
+        transform: rotateY(10deg) translateZ(20px);
+      }
+
+      .skill-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+      }
+
+      .skill-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+
+      .skill-description {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      /* Timeline for Work Experience */
+      .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 0;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 2px;
+        height: 100%;
+        background: var(--accent-color);
+        transform: translateX(-50%);
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 3rem;
+        width: calc(50% - 30px);
+        animation: slideInTimeline 0.5s ease-out;
+      }
+
+      @keyframes slideInTimeline {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .timeline-item:nth-child(odd) {
+        left: 0;
+        padding-right: 40px;
+      }
+
+      .timeline-item:nth-child(even) {
+        left: 50%;
+        padding-left: 40px;
+      }
+
+      .timeline-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .timeline-date {
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      /* Education Section */
+      .education {
+        padding: 4rem 2rem;
+      }
+
+      .education-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .education-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        animation: fadeInUp 0.5s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .education-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .education-year {
+        color: var(--accent-color);
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .education-degree {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .education-school {
+        color: #666;
+        margin-bottom: 1rem;
+      }
+
+      /* Contact Form with Modern Styling */
+      .contact {
+        padding: 4rem 2rem;
+        background: var(--light-bg);
+      }
+
+      .contact h2 {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+      }
+
+      .submit-btn {
+        background: var(--accent-color);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background: #357abd;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--primary-color);
+        color: white;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      /* Add these sections to the HTML structure */
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="#" class="logo">Portfolio</a>
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1>Welcome to My Portfolio</h1>
+        <p>Frontend Developer & UI/UX Designer</p>
+      </div>
+    </section>
+
+    <section class="skills" id="skills">
+      <h2>My Skills</h2>
+      <div class="skills-container">
+        <div class="skill-card">
+          <div class="skill-icon">💻</div>
+          <div class="skill-name">Frontend Development</div>
+          <div class="skill-description">
+            HTML5, CSS3, JavaScript, React
+            <div class="skill-level">Advanced</div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🎨</div>
+          <div class="skill-name">UI/UX Design</div>
+          <div class="skill-description">
+            Figma, Adobe XD, Sketch
+            <div class="skill-level">Intermediate</div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">⚙️</div>
+          <div class="skill-name">Backend Development</div>
+          <div class="skill-description">
+            Node.js, Express, MongoDB
+            <div class="skill-level">Intermediate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="projects" id="projects">
+      <h2>My Projects</h2>
+      <div class="project-grid">
+        <div class="project-card">
+          <div class="project-image"></div>
+          <div class="project-content">
+            <h3>Project 1</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-image"></div>
+          <div class="project-content">
+            <h3>Project 2</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-image"></div>
+          <div class="project-content">
+            <h3>Project 3</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-experience" id="experience">
+      <h2>Work Experience</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-date">2023 - Present</div>
+            <h3>Senior Frontend Developer</h3>
+            <p>Tech Solutions Inc.</p>
+            <ul>
+              <li>Led team of 5 developers</li>
+              <li>Implemented responsive design systems</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-date">2021 - 2023</div>
+            <h3>Web Developer</h3>
+            <p>Digital Creatives</p>
+            <ul>
+              <li>Developed 20+ client websites</li>
+              <li>Optimized performance metrics</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-date">2019 - 2021</div>
+            <h3>Junior Developer</h3>
+            <p>StartUp Hub</p>
+            <ul>
+              <li>Built responsive web applications</li>
+              <li>Collaborated with design team</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="education" id="education">
+      <h2>Education</h2>
+      <div class="education-grid">
+        <div class="education-card">
+          <div class="education-year">2015 - 2019</div>
+          <div class="education-degree">
+            Bachelor of Science in Computer Science
+          </div>
+          <div class="education-school">Tech University</div>
+          <p>Major in Software Engineering</p>
+          <p>GPA: 3.8/4.0</p>
+        </div>
+        <div class="education-card">
+          <div class="education-year">2019 - 2021</div>
+          <div class="education-degree">
+            Master of Science in Web Development
+          </div>
+          <div class="education-school">Digital Institute</div>
+          <p>Focus on Modern Web Technologies</p>
+          <p>Research in UI/UX Design</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <h2>Contact Me</h2>
+      <form class="contact-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+    </section>
+
+    <footer>
+      <p>&copy; 2024 Portfolio. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

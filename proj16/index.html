@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Favorite Books</title>
+    <style>
+      /* CSS Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: #f5f5f5;
+      }
+
+      /* Typography */
+      h1 {
+        font-size: 2.5rem;
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 1rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        color: #34495e;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin-bottom: 1rem;
+        font-style: italic;
+      }
+
+      /* Book Sections */
+      .book-section {
+        background-color: white;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .book-section:hover {
+        transform: translateY(-5px);
+      }
+
+      /* Images */
+      img {
+        max-width: 200px;
+        height: auto;
+        display: block;
+        margin: 1.5rem auto;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      img:hover {
+        transform: scale(1.05);
+      }
+
+      /* Why I Love Reading Section */
+      .reading-section {
+        background-color: #3498db;
+        color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-top: 3rem;
+      }
+
+      .reading-section h4 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        .book-section {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Favorite Books</h1>
+
+    <div class="book-section">
+      <h2>Harry Potter and the Sorcerer's Stone</h2>
+      <h3>by J.K. Rowling</h3>
+      <p>
+        An orphaned boy learns on his eleventh birthday that he is a wizard. He
+        is brought to Hogwarts School of Witchcraft and Wizardry to begin his
+        magical education. Along the way he makes new friends, encounters
+        magical creatures, and uncovers mysteries of the wizarding world.
+      </p>
+      <img src="book.jpg" alt="Harry Potter Book Cover" />
+    </div>
+
+    <div class="book-section">
+      <h2>The Hobbit</h2>
+      <h3>by J.R.R. Tolkien</h3>
+      <p>
+        Bilbo Baggins is a hobbit who enjoys a comfortable life in his
+        hobbit-hole at Bag End. However, his peaceful life changes when the
+        wizard Gandalf and a company of dwarves arrives on his doorstep to whisk
+        him away on an adventure.
+      </p>
+      <img src="book1.jpg" alt="The Hobbit Book Cover" />
+    </div>
+
+    <div class="book-section">
+      <h2>Pride and Prejudice</h2>
+      <h3>by Jane Austen</h3>
+      <p>
+        The story follows the main character Elizabeth Bennet as she deals with
+        issues of manners, upbringing, morality, education, and marriage in the
+        society of the landed gentry of early 19th-century England.
+      </p>
+      <img src="book2.jpg" alt="Pride and Prejudice Book Cover" />
+    </div>
+
+    <div class="reading-section">
+      <h4>Why I Love Reading</h4>
+      <p>
+        Reading takes me on amazing adventures and helps me learn about
+        different worlds and perspectives. These books are some of my favorites
+        because each one tells a unique and engaging story.
+      </p>
+    </div>
+  </body>
+</html>

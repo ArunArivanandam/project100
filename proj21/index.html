@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .scene {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 100%);
+        overflow: hidden;
+        transition: all 1.5s ease;
+      }
+
+      .scene.night {
+        background: linear-gradient(to bottom, #0c1445 0%, #1a1a2e 100%);
+      }
+
+      .sun-moon {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(to bottom right, #ffd700, #ffa500);
+        border-radius: 50%;
+        top: 40px;
+        right: 60px;
+        transition: all 1.5s ease;
+        box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
+      }
+
+      .scene.night .sun-moon {
+        background: linear-gradient(to bottom right, #ffffff, #f0f0f0);
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+        transform: translate(-200px, -20px);
+      }
+
+      /* Mountain Range Styles */
+      .mountain-range {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 85%; /* Increased height for more prominent mountains */
+      }
+
+      /* Furthest Mountain */
+      .mountain-back {
+        position: absolute;
+        bottom: 0;
+        left: -10%;
+        width: 120%;
+        height: 75%;
+        background: linear-gradient(
+          135deg,
+          #4a4a4a 0%,
+          #5a5a5a 30%,
+          #6a6a6a 60%,
+          #7a7a7a 100%
+        );
+        clip-path: polygon(
+          0% 100%,
+          10% 80%,
+          20% 85%,
+          30% 70%,
+          40% 85%,
+          50% 60%,
+          60% 85%,
+          70% 75%,
+          80% 85%,
+          90% 75%,
+          100% 100%
+        );
+        transition: all 1.5s ease;
+      }
+
+      .scene.night .mountain-back {
+        background: linear-gradient(
+          135deg,
+          #1a1a2a 0%,
+          #2a2a3a 30%,
+          #3a3a4a 60%,
+          #4a4a5a 100%
+        );
+      }
+
+      /* Middle Mountain */
+      .mountain-middle {
+        position: absolute;
+        bottom: 0;
+        left: -5%;
+        width: 110%;
+        height: 80%;
+        background: linear-gradient(
+          135deg,
+          #3a3a3a 0%,
+          #4a4a4a 30%,
+          #5a5a5a 60%,
+          #6a6a6a 100%
+        );
+        clip-path: polygon(
+          0% 100%,
+          15% 70%,
+          25% 85%,
+          35% 65%,
+          50% 85%,
+          65% 60%,
+          80% 85%,
+          100% 100%
+        );
+        transition: all 1.5s ease;
+      }
+
+      .scene.night .mountain-middle {
+        background: linear-gradient(
+          135deg,
+          #0a0a1a 0%,
+          #1a1a2a 30%,
+          #2a2a3a 60%,
+          #3a3a4a 100%
+        );
+      }
+
+      /* Front Mountain */
+      .mountain-front {
+        position: absolute;
+        bottom: 0;
+        left: 0%;
+        width: 100%;
+        height: 70%;
+        background: linear-gradient(
+          135deg,
+          #2a2a2a 0%,
+          #3a3a3a 30%,
+          #4a4a4a 60%,
+          #5a5a5a 100%
+        );
+        clip-path: polygon(
+          0% 100%,
+          20% 60%,
+          35% 75%,
+          50% 45%,
+          65% 70%,
+          80% 55%,
+          100% 100%
+        );
+        transition: all 1.5s ease;
+      }
+
+      .scene.night .mountain-front {
+        background: linear-gradient(
+          135deg,
+          #0a0a1a 0%,
+          #1a1a2a 30%,
+          #2a2a3a 60%,
+          #3a3a4a 100%
+        );
+      }
+
+      /* Snow Caps */
+      .snow {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .snow-back {
+        clip-path: polygon(
+          10% 80%,
+          20% 85%,
+          30% 70%,
+          40% 85%,
+          50% 60%,
+          60% 85%,
+          70% 75%,
+          80% 85%,
+          90% 75%
+        );
+        background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+        opacity: 0.8;
+      }
+
+      .snow-middle {
+        clip-path: polygon(
+          15% 70%,
+          25% 85%,
+          35% 65%,
+          50% 85%,
+          65% 60%,
+          80% 85%
+        );
+        background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+        opacity: 0.9;
+      }
+
+      .snow-front {
+        clip-path: polygon(20% 60%, 35% 75%, 50% 45%, 65% 70%, 80% 55%);
+        background: #ffffff;
+        opacity: 1;
+      }
+
+      /* Enhanced shadows for depth */
+      .mountain-shadow {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 20%;
+        background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(0, 0, 0, 0.2) 100%
+        );
+      }
+
+      .toggle {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        z-index: 100;
+      }
+
+      .toggle:hover {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .stars {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1.5s ease;
+      }
+
+      .scene.night .stars {
+        opacity: 1;
+      }
+
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 2s infinite alternate;
+      }
+
+      @keyframes twinkle {
+        0% {
+          transform: scale(1);
+          opacity: 0.2;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.2;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scene">
+      <button class="toggle">Toggle Day/Night</button>
+      <div class="stars"></div>
+      <div class="sun-moon"></div>
+      <div class="mountain-range">
+        <div class="mountain-back">
+          <div class="snow snow-back"></div>
+          <div class="mountain-shadow"></div>
+        </div>
+        <div class="mountain-middle">
+          <div class="snow snow-middle"></div>
+          <div class="mountain-shadow"></div>
+        </div>
+        <div class="mountain-front">
+          <div class="snow snow-front"></div>
+          <div class="mountain-shadow"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Generate stars with different sizes
+      const stars = document.querySelector(".stars");
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.width = Math.random() * 2 + 1 + "px";
+        star.style.height = star.style.width;
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 60 + "%";
+        star.style.animationDelay = Math.random() * 2 + "s";
+        stars.appendChild(star);
+      }
+
+      // Toggle day/night with proper event handling
+      document.querySelector(".toggle").addEventListener("click", function () {
+        document.querySelector(".scene").classList.toggle("night");
+      });
+    </script>
+  </body>
+</html>

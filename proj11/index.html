@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Image Gallery</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        padding: 2rem;
+      }
+
+      .controls {
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .filter-btn {
+        padding: 0.5rem 1rem;
+        margin: 0.25rem;
+        border: none;
+        border-radius: 25px;
+        background: #333;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn:hover {
+        background: #555;
+        transform: translateY(-2px);
+      }
+
+      .gallery {
+        columns: 4 300px;
+        column-gap: 1.5rem;
+        perspective: 1000px;
+      }
+
+      .gallery-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+        position: relative;
+        transform-style: preserve-3d;
+        animation: fadeIn 0.5s ease-out;
+        cursor: pointer;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        border-radius: 10px;
+        display: block;
+        transition: all 0.3s ease;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.02) rotateY(5deg);
+        filter: brightness(0.8);
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 10px;
+      }
+
+      .gallery-item:hover .overlay {
+        opacity: 1;
+      }
+
+      /* Filter Classes */
+      .sepia img {
+        filter: sepia(50%);
+      }
+      .grayscale img {
+        filter: grayscale(100%);
+      }
+      .blur img {
+        filter: blur(1px);
+      }
+      .brightness img {
+        filter: brightness(120%);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .gallery {
+          columns: 2 200px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .gallery {
+          columns: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <button class="filter-btn" onclick="applyFilter('none')">Normal</button>
+      <button class="filter-btn" onclick="applyFilter('sepia')">Sepia</button>
+      <button class="filter-btn" onclick="applyFilter('grayscale')">
+        Grayscale
+      </button>
+      <button class="filter-btn" onclick="applyFilter('blur')">Blur</button>
+      <button class="filter-btn" onclick="applyFilter('brightness')">
+        Bright
+      </button>
+    </div>
+
+    <div class="gallery">
+      <!-- Using placeholder images for demonstration -->
+      <div class="gallery-item">
+        <img src="caribbean.jpg" alt="Gallery Image 1" />
+        <div class="overlay">Image 1</div>
+      </div>
+      <div class="gallery-item">
+        <img src="background.png" alt="Gallery Image 2" />
+        <div class="overlay">Image 2</div>
+      </div>
+      <div class="gallery-item">
+        <img src="tacos_close_up_400x260.png" alt="Gallery Image 3" />
+        <div class="overlay">Image 3</div>
+      </div>
+      <div class="gallery-item">
+        <img src="tacos_tray_400x267.png" alt="Gallery Image 4" />
+        <div class="overlay">Image 4</div>
+      </div>
+      <div class="gallery-item">
+        <img src="vacation.jpg" alt="Gallery Image 5" />
+        <div class="overlay">Image 5</div>
+      </div>
+      <div class="gallery-item">
+        <img src="logo.png" alt="Gallery Image 6" />
+        <div class="overlay">Image 6</div>
+      </div>
+    </div>
+
+    <script>
+      function applyFilter(filterClass) {
+        const gallery = document.querySelector(".gallery");
+        gallery.className = "gallery " + filterClass;
+
+        // Add animation to show filter change
+        const items = document.querySelectorAll(".gallery-item");
+        items.forEach((item, index) => {
+          item.style.animation = "none";
+          item.offsetHeight; // Trigger reflow
+          item.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s`;
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      @keyframes glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px #ffd700;
+        }
+        50% {
+          box-shadow: 0 0 40px #ffa500;
+        }
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1a1c3d 0%, #45278b 100%);
+        overflow: hidden;
+      }
+
+      .stars {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: sparkle 1.5s infinite;
+      }
+
+      .book-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        perspective: 2000px;
+        position: relative;
+      }
+
+      .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .magical-element {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23FFD700" d="M12 0l3 9h9l-7 5 3 9-8-6-8 6 3-9-7-5h9z"/></svg>');
+        background-size: contain;
+        animation: float 3s infinite ease-in-out;
+      }
+
+      .book {
+        position: relative;
+        width: 400px;
+        height: 600px;
+        transform-style: preserve-3d;
+        animation: float 6s infinite ease-in-out;
+      }
+
+      .page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+        transform-origin: left center;
+        transform-style: preserve-3d;
+        cursor: pointer;
+        background: #fdfbf7;
+        border-radius: 0 15px 15px 0;
+      }
+
+      .page.flipped {
+        transform: rotateY(-180deg);
+      }
+
+      .page-front,
+      .page-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 30px;
+        box-sizing: border-box;
+        backface-visibility: hidden;
+        background: #fdfbf7;
+        border-radius: 0 15px 15px 0;
+        overflow: hidden;
+      }
+
+      .page-front::before,
+      .page-back::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent 98%, #d4af37 100%);
+        pointer-events: none;
+      }
+
+      .page-back {
+        transform: rotateY(180deg);
+        background: linear-gradient(to right, #fdfbf7 0%, #f5e6d3 100%);
+      }
+
+      .book-cover {
+        background: linear-gradient(45deg, #4a154b 0%, #7b1fa2 100%);
+        color: #ffd700;
+        text-align: center;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5),
+          inset 0 0 50px rgba(255, 215, 0, 0.2);
+        animation: glow 3s infinite;
+      }
+
+      .book-title {
+        font-family: "Arial", fantasy;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px #ffd700;
+        background: linear-gradient(45deg, #ffd700, #ffa500);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .page-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+        font-family: "Arial", fantasy;
+        color: #2c1810;
+        position: relative;
+        z-index: 1;
+      }
+
+      .chapter-title {
+        font-size: 1.8em;
+        color: #4a154b;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .page-text {
+        font-size: 1.2em;
+        line-height: 1.6;
+        color: #2c1810;
+      }
+
+      .page-number {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-style: italic;
+        color: #4a154b;
+        font-size: 1.2em;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .decoration {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        pointer-events: none;
+      }
+
+      .dragon {
+        top: 20px;
+        right: 20px;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%234a154b" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>');
+        animation: float 4s infinite ease-in-out;
+      }
+    </style>
+
+    <script>
+      // Create stars
+      window.onload = function () {
+        const starsContainer = document.createElement("div");
+        starsContainer.className = "stars";
+        document.body.appendChild(starsContainer);
+
+        for (let i = 0; i < 50; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          star.style.left = Math.random() * 100 + "%";
+          star.style.top = Math.random() * 100 + "%";
+          star.style.width = Math.random() * 3 + "px";
+          star.style.height = star.style.width;
+          star.style.animationDelay = Math.random() * 2 + "s";
+          starsContainer.appendChild(star);
+        }
+
+        // Add floating magical elements
+        const floatingElements = document.createElement("div");
+        floatingElements.className = "floating-elements";
+        document.querySelector(".book-container").appendChild(floatingElements);
+
+        for (let i = 0; i < 10; i++) {
+          const element = document.createElement("div");
+          element.className = "magical-element";
+          element.style.left = Math.random() * 100 + "%";
+          element.style.top = Math.random() * 100 + "%";
+          element.style.animationDelay = Math.random() * 2 + "s";
+          floatingElements.appendChild(element);
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div class="book-container">
+      <div class="book">
+        <div class="page book-cover">
+          <div class="page-content">
+            <h1 class="book-title">The Magical Journey</h1>
+            <p style="color: #ffd700; font-size: 1.2em">
+              Open to begin your adventure...
+            </p>
+          </div>
+        </div>
+        <div class="page" onclick="this.classList.toggle('flipped')">
+          <div class="page-front">
+            <div class="page-content">
+              <div class="decoration dragon"></div>
+              <h2 class="chapter-title">The Hidden Kingdom</h2>
+              <p class="page-text">In a realm beyond the shooting stars...</p>
+              <span class="page-number">1</span>
+            </div>
+          </div>
+          <div class="page-back">
+            <div class="page-content">
+              <div class="decoration dragon"></div>
+              <p class="page-text">
+                Where dragons soar through crystal skies...
+              </p>
+              <span class="page-number">2</span>
+            </div>
+          </div>
+        </div>
+        <div class="page" onclick="this.classList.toggle('flipped')">
+          <div class="page-front">
+            <div class="page-content">
+              <div class="decoration dragon"></div>
+              <h2 class="chapter-title">The Enchanted Forest</h2>
+              <p class="page-text">Deep within the whispering woods...</p>
+              <span class="page-number">3</span>
+            </div>
+          </div>
+          <div class="page-back">
+            <div class="page-content">
+              <div class="decoration dragon"></div>
+              <p class="page-text">Magic flows like gentle streams...</p>
+              <span class="page-number">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

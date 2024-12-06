@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typography-Focused Blog Theme</title>
+    <style>
+      /* Typography Scale using modular scale with ratio of 1.25 */
+      :root {
+        --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        --font-serif: Georgia, "Times New Roman", serif;
+        --font-mono: "SF Mono", Monaco, Consolas, monospace;
+
+        --text-xs: 0.64rem;
+        --text-sm: 0.8rem;
+        --text-base: 1rem;
+        --text-lg: 1.25rem;
+        --text-xl: 1.563rem;
+        --text-2xl: 1.953rem;
+        --text-3xl: 2.441rem;
+        --text-4xl: 3.052rem;
+
+        --line-height-tight: 1.2;
+        --line-height-normal: 1.5;
+        --line-height-relaxed: 1.75;
+      }
+
+      /* Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Base Styles */
+      body {
+        font-family: var(--font-serif);
+        font-size: var(--text-base);
+        line-height: var(--line-height-normal);
+        color: #2d3748;
+        background: #fff;
+      }
+
+      .container {
+        max-width: 80ch;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: var(--font-sans);
+        line-height: var(--line-height-tight);
+        margin-top: 2.5em;
+        margin-bottom: 1em;
+        color: #1a202c;
+      }
+
+      h1 {
+        font-size: var(--text-4xl);
+      }
+      h2 {
+        font-size: var(--text-3xl);
+      }
+      h3 {
+        font-size: var(--text-2xl);
+      }
+      h4 {
+        font-size: var(--text-xl);
+      }
+      h5 {
+        font-size: var(--text-lg);
+      }
+      h6 {
+        font-size: var(--text-base);
+      }
+
+      p {
+        margin-bottom: 1.5em;
+      }
+
+      /* Multi-column Layout */
+      .two-columns {
+        column-count: 2;
+        column-gap: 2.5rem;
+        margin: 2rem 0;
+      }
+
+      .three-columns {
+        column-count: 3;
+        column-gap: 2.5rem;
+        margin: 2rem 0;
+      }
+
+      /* Drop Cap */
+      .has-drop-cap:first-letter {
+        float: left;
+        font-family: var(--font-serif);
+        font-size: var(--text-4xl);
+        line-height: 0.8;
+        padding-right: 0.5rem;
+        margin-top: 0.5rem;
+        color: #4a5568;
+      }
+
+      /* Pull Quote */
+      .pull-quote {
+        float: right;
+        width: 40%;
+        margin: 1rem 0 1rem 2rem;
+        padding-left: 1rem;
+        border-left: 4px solid #4a5568;
+        font-size: var(--text-xl);
+        font-style: italic;
+        line-height: var(--line-height-tight);
+        color: #4a5568;
+      }
+
+      /* Code Blocks */
+      pre,
+      code {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        line-height: var(--line-height-relaxed);
+      }
+
+      pre {
+        background: #f7fafc;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 2rem 0;
+      }
+
+      code {
+        background: #edf2f7;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25rem;
+      }
+
+      /* Table Styling */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        font-size: var(--text-sm);
+      }
+
+      th,
+      td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      th {
+        background: #f7fafc;
+        font-family: var(--font-sans);
+        font-weight: 600;
+      }
+
+      tr:nth-child(even) {
+        background: #f7fafc;
+      }
+
+      /* Additional Elements */
+      blockquote {
+        margin: 2rem 0;
+        padding: 1rem 0 1rem 1.5rem;
+        border-left: 4px solid #cbd5e0;
+        color: #4a5568;
+        font-style: italic;
+      }
+
+      hr {
+        margin: 3rem 0;
+        border: none;
+        border-top: 2px solid #e2e8f0;
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          max-width: none;
+          padding: 0;
+          font-size: 12pt;
+          line-height: 1.4;
+        }
+
+        pre,
+        code {
+          background: none;
+          border: 1px solid #ccc;
+        }
+
+        .pull-quote {
+          page-break-inside: avoid;
+        }
+
+        a[href]::after {
+          content: " (" attr(href) ")";
+          font-size: 90%;
+        }
+
+        @page {
+          margin: 2cm;
+        }
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .two-columns,
+        .three-columns {
+          column-count: 1;
+        }
+
+        .pull-quote {
+          float: none;
+          width: 100%;
+          margin: 2rem 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Typography-Focused Blog Theme</h1>
+
+      <p class="has-drop-cap">
+        Welcome to our typography-focused blog theme. This demo showcases
+        various typographic elements and content styling features that make
+        long-form content more engaging and readable. From drop caps to pull
+        quotes, code blocks to tables, this theme demonstrates the art of
+        digital typography.
+      </p>
+
+      <div class="pull-quote">
+        "Typography is the art and technique of arranging type to make written
+        language legible, readable, and appealing when displayed."
+      </div>
+
+      <h2>Multi-Column Layout</h2>
+      <div class="two-columns">
+        <p>
+          This section demonstrates a two-column layout, perfect for comparing
+          ideas or presenting related content side by side. The columns are
+          responsive and will stack on mobile devices for better readability.
+          Notice how the text flows naturally between columns, maintaining
+          proper spacing and alignment throughout.
+        </p>
+        <p>
+          Column layouts can be particularly useful for newsletters, feature
+          comparisons, or when you want to present multiple ideas in parallel.
+          They help break up long blocks of text and make content more scannable
+          for readers.
+        </p>
+      </div>
+
+      <h2>Code Block Example</h2>
+      <pre><code>function calculateReadingTime(text) {
+    const wordsPerMinute = 200;
+    const words = text.trim().split(/\s+/).length;
+    const minutes = Math.ceil(words / wordsPerMinute);
+    return `${minutes} min read`;
+}</code></pre>
+
+      <h2>Table Styling</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Typography Scale</td>
+            <td>Modular scale with 1.25 ratio</td>
+            <td>Implemented</td>
+          </tr>
+          <tr>
+            <td>Drop Caps</td>
+            <td>Large initial letter styling</td>
+            <td>Implemented</td>
+          </tr>
+          <tr>
+            <td>Pull Quotes</td>
+            <td>Floating quote blocks</td>
+            <td>Implemented</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Three-Column Layout Example</h2>
+      <div class="three-columns">
+        <p>
+          This demonstrates a three-column layout. It's perfect for presenting
+          shorter pieces of related content, such as feature lists, team
+          members, or service offerings. The columns automatically adjust based
+          on screen size.
+        </p>
+        <p>
+          The spacing between columns (column-gap) has been carefully chosen to
+          maintain readability while creating clear visual separation between
+          content sections. This helps readers distinguish between different
+          content blocks.
+        </p>
+        <p>
+          On mobile devices, these columns will stack vertically to ensure
+          content remains easily readable on smaller screens. This responsive
+          behavior is essential for maintaining a good user experience across
+          all devices.
+        </p>
+      </div>
+
+      <blockquote>
+        This is a standard blockquote style, distinct from pull quotes. It's
+        perfect for highlighting important passages or quotations within the
+        main content flow.
+      </blockquote>
+
+      <hr />
+
+      <h2>Print Preview</h2>
+      <p>
+        Try printing this page to see how the print stylesheet optimizes content
+        for paper. URLs will be expanded, backgrounds removed, and margins
+        adjusted for optimal reading on physical media.
+      </p>
+    </div>
+  </body>
+</html>

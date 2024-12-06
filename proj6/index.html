@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Card</title>
+    <style>
+      /* CSS Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Import Google Font - demonstrating web fonts */
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+      /* Body styles - demonstrating colors and centering */
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f0f2f5;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* Card container - demonstrating box model, width/height, borders */
+      .profile-card {
+        background-color: #ffffff;
+        width: 300px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      /* Banner section - demonstrating background properties */
+      .banner {
+        height: 100px;
+        background: linear-gradient(135deg, #4a90e2, #7e57c2);
+      }
+
+      /* Avatar container - demonstrating positioning */
+      .avatar-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -50px;
+      }
+
+      /* Avatar image - demonstrating borders and dimensions */
+      .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 4px solid #ffffff;
+      }
+
+      /* Profile info - demonstrating padding and text alignment */
+      .profile-info {
+        padding: 20px;
+        text-align: center;
+      }
+
+      /* Name heading - demonstrating typography */
+      .name {
+        color: #1a1a1a;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      /* Title text - demonstrating colors and font properties */
+      .title {
+        color: #65676b;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+
+      /* Stats section - demonstrating flexbox */
+      .stats {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px;
+        border-top: 1px solid #e4e6eb;
+      }
+
+      /* Stat items - demonstrating text styling */
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-value {
+        color: #1a1a1a;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+
+      .stat-label {
+        color: #65676b;
+        font-size: 0.8rem;
+      }
+
+      /* Connect button - demonstrating hover effects */
+      .connect-btn {
+        display: block;
+        width: calc(100% - 40px);
+        margin: 0 20px 20px;
+        padding: 10px;
+        background-color: #1877f2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .connect-btn:hover {
+        background-color: #166fe5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile-card">
+      <div class="banner"></div>
+      <div class="avatar-container">
+        <img src="pic-3.jpg" alt="Profile Picture" class="avatar" />
+      </div>
+      <div class="profile-info">
+        <h1 class="name">Sarah Johnson</h1>
+        <p class="title">Full Stack Developer</p>
+      </div>
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-value">1.5K</div>
+          <div class="stat-label">Followers</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">120</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">12K</div>
+          <div class="stat-label">Impact</div>
+        </div>
+      </div>
+      <button class="connect-btn">Connect</button>
+    </div>
+  </body>
+</html>
