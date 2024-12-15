@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing Speed Checker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .typing-text {
+        font-size: 18px;
+        line-height: 1.6;
+        margin: 20px 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+      }
+
+      .input-area {
+        width: 100%;
+        height: 120px;
+        margin: 20px 0;
+        padding: 15px;
+        font-size: 16px;
+        border: 2px solid #dee2e6;
+        border-radius: 5px;
+        resize: none;
+      }
+
+      .input-area:focus {
+        outline: none;
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+      }
+
+      .button-container {
+        margin: 20px 0;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        margin-right: 10px;
+        transition: background-color 0.3s;
+      }
+
+      .start-btn {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .start-btn:hover {
+        background-color: #218838;
+      }
+
+      .reset-btn {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .reset-btn:hover {
+        background-color: #c82333;
+      }
+
+      .results {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+      }
+
+      .results h3 {
+        margin-top: 0;
+        color: #343a40;
+      }
+
+      .stat {
+        display: inline-block;
+        margin: 10px 20px 10px 0;
+        padding: 10px 15px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+
+        .container {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Typing Speed Checker</h1>
+      <div id="typingText" class="typing-text">Click "Start Test" to begin</div>
+      <textarea
+        id="inputArea"
+        class="input-area"
+        placeholder="Start typing here when the test begins..."
+        disabled
+      ></textarea>
+      <div class="button-container">
+        <button id="startButton" class="start-btn">Start Test</button>
+        <button id="resetButton" class="reset-btn">Reset</button>
+      </div>
+      <div id="results" class="results"></div>
+    </div>
+
+    <script>
+      const typingText = document.getElementById("typingText");
+      const inputArea = document.getElementById("inputArea");
+      const startButton = document.getElementById("startButton");
+      const resetButton = document.getElementById("resetButton");
+      const resultDiv = document.getElementById("results");
+
+      const sampleTexts = [
+        "The quick brown fox jumps over the lazy dog.",
+        "To be or not to be, that is the question.",
+        "All that glitters is not gold.",
+        "Practice makes perfect when learning to type.",
+        "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+      ];
+
+      let startTime,
+        endTime,
+        currentText,
+        timerRunning = false;
+
+      startButton.addEventListener("click", startTest);
+      resetButton.addEventListener("click", resetTest);
+      inputArea.addEventListener("input", checkComplete);
+
+      function startTest() {
+        if (!timerRunning) {
+          inputArea.value = "";
+          inputArea.disabled = false;
+          currentText =
+            sampleTexts[Math.floor(Math.random() * sampleTexts.length)];
+          typingText.textContent = currentText;
+          startTime = new Date().getTime();
+          timerRunning = true;
+          inputArea.focus();
+          startButton.textContent = "Test in Progress...";
+          resultDiv.textContent = "";
+        }
+      }
+
+      function checkComplete() {
+        if (timerRunning && inputArea.value.length >= currentText.length) {
+          endTime = new Date().getTime();
+          timerRunning = false;
+          inputArea.disabled = true;
+          calculateResults();
+          startButton.textContent = "Start New Test";
+        }
+      }
+
+      function calculateResults() {
+        const timeElapsed = (endTime - startTime) / 1000; // in seconds
+        const wordsTyped = inputArea.value.trim().split(/\s+/).length;
+        const wpm = Math.round((wordsTyped / timeElapsed) * 60);
+
+        const correctChars = [...currentText].filter(
+          (char, i) => char === inputArea.value[i]
+        ).length;
+        const accuracy = Math.round((correctChars / currentText.length) * 100);
+
+        resultDiv.innerHTML = `
+                <h3>Results:</h3>
+                <div class="stat">
+                    <strong>WPM:</strong> ${wpm}
+                </div>
+                <div class="stat">
+                    <strong>Accuracy:</strong> ${accuracy}%
+                </div>
+                <div class="stat">
+                    <strong>Time:</strong> ${timeElapsed.toFixed(1)}s
+                </div>
+            `;
+      }
+
+      function resetTest() {
+        timerRunning = false;
+        inputArea.value = "";
+        inputArea.disabled = true;
+        typingText.textContent = 'Click "Start Test" to begin';
+        startButton.textContent = "Start Test";
+        resultDiv.textContent = "";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard</title>
+    <style>
+      /* Modern, clean styling with a professional look */
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(to right, #2c3e50, #3498db);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+      }
+
+      .search-box {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #2980b9;
+      }
+
+      #loading,
+      #error {
+        text-align: center;
+        margin: 20px 0;
+        display: none;
+      }
+
+      #error {
+        color: #e74c3c;
+        background: #ffd7d7;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      #loading {
+        color: #2c3e50;
+      }
+
+      #weatherInfo {
+        display: none;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+
+      .weather-detail {
+        margin: 15px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .weather-detail strong {
+        color: #2c3e50;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Weather Dashboard</h1>
+
+      <!-- Search interface -->
+      <div class="search-box">
+        <input
+          type="text"
+          id="citySearch"
+          placeholder="Enter city name"
+          aria-label="City name"
+        />
+        <button id="searchButton">Get Weather</button>
+      </div>
+
+      <!-- Status messages -->
+      <div id="loading">Loading weather data...</div>
+      <div id="error"></div>
+
+      <!-- Weather information display -->
+      <div id="weatherInfo">
+        <h2 id="cityName"></h2>
+        <div class="weather-detail">
+          <strong>Temperature:</strong> <span id="temperature"></span>
+        </div>
+        <div class="weather-detail">
+          <strong>Humidity:</strong> <span id="humidity"></span>
+        </div>
+        <div class="weather-detail">
+          <strong>Wind Speed:</strong> <span id="windSpeed"></span>
+        </div>
+        <div class="weather-detail">
+          <strong>Description:</strong> <span id="description"></span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Weather Dashboard Class - Manages all weather-related functionality
+      class WeatherDashboard {
+        constructor() {
+          // API configuration
+          this.API_KEY = "f9b4db1b3d8fb4fc93114c1cfb1c7fe4"; // Replace with your actual API key
+          this.BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+
+          // Initialize UI elements
+          this.initializeElements();
+
+          // Set up event listeners
+          this.setupEventListeners();
+        }
+
+        // Get references to all DOM elements we'll need
+        initializeElements() {
+          this.searchInput = document.getElementById("citySearch");
+          this.searchButton = document.getElementById("searchButton");
+          this.loadingElement = document.getElementById("loading");
+          this.errorElement = document.getElementById("error");
+          this.weatherInfo = document.getElementById("weatherInfo");
+          this.cityNameElement = document.getElementById("cityName");
+          this.temperatureElement = document.getElementById("temperature");
+          this.humidityElement = document.getElementById("humidity");
+          this.windSpeedElement = document.getElementById("windSpeed");
+          this.descriptionElement = document.getElementById("description");
+        }
+
+        // Set up event handlers for user interactions
+        setupEventListeners() {
+          // Handle button clicks
+          this.searchButton.addEventListener("click", () => {
+            this.getWeather();
+          });
+
+          // Handle Enter key in search input
+          this.searchInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+              this.getWeather();
+            }
+          });
+        }
+
+        // Main function to fetch and display weather
+        async getWeather() {
+          const city = this.searchInput.value.trim();
+
+          // Validate input
+          if (!city) {
+            this.showError("Please enter a city name");
+            return;
+          }
+
+          // Show loading state
+          this.showLoading();
+
+          try {
+            // Fetch weather data
+            const weatherData = await this.fetchWeatherData(city);
+
+            // Display the weather information
+            this.displayWeather(weatherData);
+          } catch (error) {
+            // Handle any errors
+            this.showError(error.message);
+          }
+        }
+
+        // Fetch weather data from the API
+        async fetchWeatherData(city) {
+          // Construct URL with query parameters
+          const params = new URLSearchParams({
+            q: city,
+            appid: this.API_KEY,
+            units: "metric", // Use metric units
+          });
+
+          // Make API request
+          const response = await fetch(`${this.BASE_URL}?${params}`);
+
+          // Handle HTTP errors
+          if (!response.ok) {
+            throw new Error(
+              response.status === 404
+                ? "City not found"
+                : "Failed to fetch weather data"
+            );
+          }
+
+          // Parse and return JSON data
+          return await response.json();
+        }
+
+        // Display weather data in the UI
+        displayWeather(data) {
+          // Update all weather information elements
+          this.cityNameElement.textContent = `${data.name}, ${data.sys.country}`;
+          this.temperatureElement.textContent = `${Math.round(
+            data.main.temp
+          )}°C`;
+          this.humidityElement.textContent = `${data.main.humidity}%`;
+          this.windSpeedElement.textContent = `${data.wind.speed} m/s`;
+          this.descriptionElement.textContent =
+            data.weather[0].description.charAt(0).toUpperCase() +
+            data.weather[0].description.slice(1);
+
+          // Hide loading and show weather info
+          this.hideLoading();
+          this.weatherInfo.style.display = "block";
+        }
+
+        // Show loading state
+        showLoading() {
+          this.loadingElement.style.display = "block";
+          this.errorElement.style.display = "none";
+          this.weatherInfo.style.display = "none";
+        }
+
+        // Hide loading state
+        hideLoading() {
+          this.loadingElement.style.display = "none";
+        }
+
+        // Display error message
+        showError(message) {
+          this.errorElement.textContent = message;
+          this.errorElement.style.display = "block";
+          this.loadingElement.style.display = "none";
+          this.weatherInfo.style.display = "none";
+        }
+      }
+
+      // Initialize the dashboard when the page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        new WeatherDashboard();
+      });
+    </script>
+  </body>
+</html>

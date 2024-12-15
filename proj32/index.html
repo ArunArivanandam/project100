@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Form Validator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        background-color: #f5f5f5;
+      }
+
+      .form-container {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: bold;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #4caf50;
+      }
+
+      .error {
+        color: #d32f2f;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: none;
+      }
+
+      input.invalid {
+        border-color: #d32f2f;
+      }
+
+      input.valid {
+        border-color: #4caf50;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      .success-message {
+        display: none;
+        background-color: #4caf50;
+        color: white;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <form id="validationForm" novalidate>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            data-validation="required|minLength:3|maxLength:20|pattern:^[a-zA-Z0-9_-]+$"
+            data-error="Username is required|Username must be at least 3 characters|Username cannot exceed 20 characters|Username can only contain letters, numbers, underscores, and hyphens"
+          />
+          <div class="error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            data-validation="required|email"
+            data-error="Email is required|Please enter a valid email address"
+          />
+          <div class="error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            data-validation="required|minLength:8|password"
+            data-error="Password is required|Password must be at least 8 characters|Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+          />
+          <div class="error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            data-validation="required|match:password"
+            data-error="Please confirm your password|Passwords do not match"
+          />
+          <div class="error"></div>
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+      <div class="success-message">Form submitted successfully!</div>
+    </div>
+
+    <script>
+      // FormValidator class for handling form validation
+      class FormValidator {
+        constructor(formElement) {
+          this.form = formElement;
+          this.validators = {
+            required: (value) => value.trim() !== "",
+            email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+            minLength: (value, length) => value.length >= parseInt(length),
+            maxLength: (value, length) => value.length <= parseInt(length),
+            pattern: (value, pattern) => new RegExp(pattern).test(value),
+            password: (value) =>
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+                value
+              ),
+            match: (value, targetField) =>
+              value === this.form.querySelector(`#${targetField}`).value,
+          };
+
+          this.init();
+        }
+
+        // Initialize the form validator
+        init() {
+          // Create and dispatch custom events
+          this.validationSuccessEvent = new CustomEvent("validationSuccess");
+          this.validationErrorEvent = new CustomEvent("validationError");
+
+          // Add form submit handler
+          this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+
+          // Add input event listeners for real-time validation
+          this.form.querySelectorAll("input").forEach((input) => {
+            input.addEventListener("input", () => this.validateField(input));
+            input.addEventListener("blur", () => this.validateField(input));
+          });
+        }
+
+        // Validate a single field
+        validateField(field) {
+          const validations = field.dataset.validation?.split("|") || [];
+          const errorMessages = field.dataset.error?.split("|") || [];
+          const errorElement = field.nextElementSibling;
+          let isValid = true;
+          let errorMessage = "";
+
+          // Reset field state
+          field.classList.remove("valid", "invalid");
+          errorElement.style.display = "none";
+
+          // Check each validation rule
+          for (let i = 0; i < validations.length; i++) {
+            const [rule, param] = validations[i].split(":");
+
+            if (!this.validators[rule](field.value, param)) {
+              isValid = false;
+              errorMessage = errorMessages[i];
+              break;
+            }
+          }
+
+          // Update field state and show/hide error message
+          if (!isValid) {
+            field.classList.add("invalid");
+            errorElement.textContent = errorMessage;
+            errorElement.style.display = "block";
+          } else {
+            field.classList.add("valid");
+          }
+
+          return isValid;
+        }
+
+        // Handle form submission
+        handleSubmit(e) {
+          e.preventDefault();
+          let isFormValid = true;
+          const fields = this.form.querySelectorAll("input");
+
+          // Validate all fields
+          fields.forEach((field) => {
+            if (!this.validateField(field)) {
+              isFormValid = false;
+            }
+          });
+
+          // Display success message or error event
+          if (isFormValid) {
+            this.form.dispatchEvent(this.validationSuccessEvent);
+            document.querySelector(".success-message").style.display = "block";
+            this.form.reset();
+            fields.forEach((field) =>
+              field.classList.remove("valid", "invalid")
+            );
+            setTimeout(() => {
+              document.querySelector(".success-message").style.display = "none";
+            }, 3000);
+          } else {
+            this.form.dispatchEvent(this.validationErrorEvent);
+          }
+        }
+      }
+
+      // Initialize the form validator when the DOM is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("validationForm");
+        const validator = new FormValidator(form);
+
+        // Example of custom event handling
+        form.addEventListener("validationSuccess", () => {
+          console.log("Form validation successful!");
+        });
+
+        form.addEventListener("validationError", () => {
+          console.log("Form validation failed!");
+        });
+      });
+    </script>
+  </body>
+</html>

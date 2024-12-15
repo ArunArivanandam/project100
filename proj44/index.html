@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .game {
+        display: flex;
+        flex-direction: row;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      .board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        width: 180px;
+        margin-right: 20px;
+      }
+
+      .square {
+        background: #fff;
+        border: 1px solid #999;
+        height: 60px;
+        width: 60px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .square:hover {
+        background: #f0f0f0;
+      }
+
+      .status {
+        margin-bottom: 10px;
+      }
+
+      .game-info {
+        margin-left: 20px;
+      }
+
+      button.history {
+        display: block;
+        margin: 5px 0;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game">
+      <div class="game-board">
+        <div class="status"></div>
+        <div class="board"></div>
+      </div>
+      <div class="game-info">
+        <div class="moves"></div>
+      </div>
+    </div>
+
+    <script>
+      class TicTacToe {
+        constructor() {
+          this.history = [
+            {
+              squares: Array(9).fill(null),
+              xIsNext: true,
+            },
+          ];
+          this.currentMove = 0;
+          this.setup();
+          this.render();
+        }
+
+        setup() {
+          // Create board squares
+          const board = document.querySelector(".board");
+          for (let i = 0; i < 9; i++) {
+            const square = document.createElement("button");
+            square.className = "square";
+            square.dataset.index = i;
+            square.addEventListener("click", () => this.handleClick(i));
+            board.appendChild(square);
+          }
+
+          // Setup moves container
+          this.movesContainer = document.querySelector(".moves");
+          this.statusElement = document.querySelector(".status");
+        }
+
+        handleClick(i) {
+          const current = this.history[this.currentMove];
+          const squares = [...current.squares];
+
+          if (calculateWinner(squares) || squares[i]) {
+            return;
+          }
+
+          squares[i] = current.xIsNext ? "X" : "O";
+
+          this.history = this.history.slice(0, this.currentMove + 1);
+          this.history.push({
+            squares: squares,
+            xIsNext: !current.xIsNext,
+          });
+          this.currentMove = this.history.length - 1;
+
+          this.render();
+        }
+
+        jumpTo(move) {
+          this.currentMove = move;
+          this.render();
+        }
+
+        render() {
+          const current = this.history[this.currentMove];
+          const winner = calculateWinner(current.squares);
+
+          // Update status
+          let status;
+          if (winner) {
+            status = `Winner: ${winner}`;
+          } else if (current.squares.every((square) => square)) {
+            status = "Draw!";
+          } else {
+            status = `Next player: ${current.xIsNext ? "X" : "O"}`;
+          }
+          this.statusElement.textContent = status;
+
+          // Update board
+          const squares = document.querySelectorAll(".square");
+          current.squares.forEach((value, i) => {
+            squares[i].textContent = value;
+          });
+
+          // Update move list
+          this.movesContainer.innerHTML = "";
+          this.history.forEach((_, move) => {
+            const button = document.createElement("button");
+            button.className = "history";
+            button.textContent = move
+              ? `Go to move #${move}`
+              : "Go to game start";
+            if (move === this.currentMove) {
+              button.style.fontWeight = "bold";
+            }
+            button.addEventListener("click", () => this.jumpTo(move));
+            this.movesContainer.appendChild(button);
+          });
+        }
+      }
+
+      function calculateWinner(squares) {
+        const lines = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8], // rows
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8], // columns
+          [0, 4, 8],
+          [2, 4, 6], // diagonals
+        ];
+
+        for (const [a, b, c] of lines) {
+          if (
+            squares[a] &&
+            squares[a] === squares[b] &&
+            squares[a] === squares[c]
+          ) {
+            return squares[a];
+          }
+        }
+        return null;
+      }
+
+      // Initialize the game
+      new TicTacToe();
+    </script>
+  </body>
+</html>

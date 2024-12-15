@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Quiz App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        min-height: 100vh;
+        padding: 20px;
+        color: #333;
+      }
+
+      .quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      .quiz-header {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 1px solid #e9ecef;
+        text-align: center;
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: #e9ecef;
+        margin-top: 10px;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        background: #4c6ef5;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .quiz-stats {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background: #f1f3f5;
+        font-size: 0.9em;
+      }
+
+      .stat {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .question-container {
+        padding: 30px;
+      }
+
+      .question {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .options {
+        display: grid;
+        gap: 12px;
+      }
+
+      .option {
+        padding: 15px;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .option:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+      }
+
+      .option.selected {
+        border-color: #4c6ef5;
+        background: #edf2ff;
+      }
+
+      .option.correct {
+        border-color: #40c057;
+        background: #ebfbee;
+      }
+
+      .option.incorrect {
+        border-color: #fa5252;
+        background: #fff5f5;
+      }
+
+      .quiz-footer {
+        padding: 20px;
+        border-top: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        background: #4c6ef5;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      button:hover {
+        background: #364fc7;
+      }
+
+      button:disabled {
+        background: #adb5bd;
+        cursor: not-allowed;
+      }
+
+      .feedback {
+        font-size: 0.9em;
+        padding: 10px;
+        text-align: center;
+        display: none;
+      }
+
+      .results {
+        padding: 30px;
+        text-align: center;
+        display: none;
+      }
+
+      .results h2 {
+        margin-bottom: 20px;
+      }
+
+      .score-details {
+        display: grid;
+        gap: 15px;
+        max-width: 300px;
+        margin: 0 auto 20px;
+      }
+
+      .score-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <h1>Interactive Quiz</h1>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+      </div>
+
+      <div class="quiz-stats">
+        <div class="stat">
+          <span>Question:</span>
+          <span id="questionNumber">1/10</span>
+        </div>
+        <div class="stat">
+          <span>Score:</span>
+          <span id="score">0</span>
+        </div>
+        <div class="stat">
+          <span>Time:</span>
+          <span id="timer">00:00</span>
+        </div>
+      </div>
+
+      <div class="question-container" id="questionContainer">
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+
+      <div class="results" id="results">
+        <h2>Quiz Complete!</h2>
+        <div class="score-details">
+          <div class="score-item">
+            <span>Final Score:</span>
+            <span id="finalScore">0</span>
+          </div>
+          <div class="score-item">
+            <span>Correct Answers:</span>
+            <span id="correctAnswers">0</span>
+          </div>
+          <div class="score-item">
+            <span>Time Taken:</span>
+            <span id="timeTaken">00:00</span>
+          </div>
+        </div>
+        <button onclick="restartQuiz()">Try Again</button>
+      </div>
+
+      <div class="quiz-footer">
+        <button id="previousBtn" onclick="previousQuestion()" disabled>
+          Previous
+        </button>
+        <button id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+      </div>
+    </div>
+
+    <script>
+      // Quiz questions database
+      const quizData = [
+        // Easy Questions (1-10)
+        {
+          question:
+            "What is the basic selector used to select all paragraph elements in CSS?",
+          options: ["#p", ".p", "p", "*p"],
+          correct: 2,
+          difficulty: "Easy",
+        },
+        {
+          question: "Which CSS property is used to change the text color?",
+          options: ["text-color", "font-color", "color", "text-style"],
+          correct: 2,
+          difficulty: "Easy",
+        },
+        {
+          question:
+            "In CSS, which unit is relative to the root element's font-size?",
+          options: ["px", "em", "rem", "vh"],
+          correct: 2,
+          difficulty: "Easy",
+        },
+        {
+          question: "What symbol is used to define a class selector in CSS?",
+          options: ["#", ".", "@", "$"],
+          correct: 1,
+          difficulty: "Easy",
+        },
+        {
+          question:
+            "Which box model component represents the space between the content and the border?",
+          options: ["Margin", "Padding", "Border", "Outline"],
+          correct: 1,
+          difficulty: "Easy",
+        },
+        {
+          question: "How do you declare a CSS variable (custom property)?",
+          options: ["$variable", "@variable", "--variable", "_variable"],
+          correct: 2,
+          difficulty: "Easy",
+        },
+        {
+          question: "Which property is used to make text bold?",
+          options: ["font-weight", "text-weight", "bold", "text-style"],
+          correct: 0,
+          difficulty: "Easy",
+        },
+        {
+          question: "What is the default value of the box-sizing property?",
+          options: ["border-box", "content-box", "padding-box", "margin-box"],
+          correct: 1,
+          difficulty: "Easy",
+        },
+        {
+          question: "Which color value represents full opacity in rgba()?",
+          options: ["0", "1", "100", "255"],
+          correct: 1,
+          difficulty: "Easy",
+        },
+        {
+          question:
+            "Which selector is used to select an element with a specific ID?",
+          options: [".", "#", "*", "@"],
+          correct: 1,
+          difficulty: "Easy",
+        },
+
+        // Medium Questions (11-20)
+        {
+          question: "Which of these properties is NOT inherited by default?",
+          options: ["color", "font-family", "padding", "line-height"],
+          correct: 2,
+          difficulty: "Medium",
+        },
+        {
+          question: "In the HSL color model, what does the 'L' stand for?",
+          options: ["Level", "Luminance", "Lightness", "Length"],
+          correct: 2,
+          difficulty: "Medium",
+        },
+        {
+          question: "What is the specificity value of a class selector?",
+          options: ["1", "10", "100", "1000"],
+          correct: 1,
+          difficulty: "Medium",
+        },
+        {
+          question:
+            "Which pseudo-class is used to select an element when it's being actively clicked?",
+          options: [":hover", ":focus", ":active", ":visited"],
+          correct: 2,
+          difficulty: "Medium",
+        },
+        {
+          question: "What does the '>' combinator select?",
+          options: [
+            "All descendants",
+            "Direct children only",
+            "Adjacent siblings",
+            "All siblings",
+          ],
+          correct: 1,
+          difficulty: "Medium",
+        },
+        {
+          question:
+            "Which keyword forces a property to inherit its value from its parent?",
+          options: ["inherit", "initial", "unset", "revert"],
+          correct: 0,
+          difficulty: "Medium",
+        },
+        {
+          question: "What is the scope of CSS variables declared in :root?",
+          options: [
+            "Local scope",
+            "Block scope",
+            "Global scope",
+            "Function scope",
+          ],
+          correct: 2,
+          difficulty: "Medium",
+        },
+        {
+          question: "Which unit is based on the viewport width?",
+          options: ["vh", "vw", "em", "rem"],
+          correct: 1,
+          difficulty: "Medium",
+        },
+        {
+          question: "What is the purpose of the 'initial' keyword in CSS?",
+          options: [
+            "Inherits from parent",
+            "Resets to default value",
+            "Removes the property",
+            "Sets to most recent value",
+          ],
+          correct: 1,
+          difficulty: "Medium",
+        },
+        {
+          question:
+            "In the box model, what is the total width of an element with width: 100px, padding: 10px, and border: 5px when using content-box?",
+          options: ["100px", "120px", "130px", "140px"],
+          correct: 2,
+          difficulty: "Medium",
+        },
+
+        // Hard Questions (21-30)
+        {
+          question: "What is the specificity value of p.class#id?",
+          options: ["111", "211", "121", "112"],
+          correct: 0,
+          difficulty: "Hard",
+        },
+        {
+          question: "Which selector has higher specificity?",
+          options: ["div.class p", "div #id", ".class1.class2", "#id > p"],
+          correct: 1,
+          difficulty: "Hard",
+        },
+        {
+          question:
+            "What happens when margin-top and margin-bottom are both set to auto?",
+          options: [
+            "Element centers vertically",
+            "Element centers horizontally",
+            "Margins become 0",
+            "Margins collapse",
+          ],
+          correct: 2,
+          difficulty: "Hard",
+        },
+        {
+          question: "Which statement about the 'unset' keyword is true?",
+          options: [
+            "Always inherits from parent",
+            "Always resets to initial value",
+            "Acts like 'inherit' for inherited properties and 'initial' for non-inherited properties",
+            "Removes the property completely",
+          ],
+          correct: 2,
+          difficulty: "Hard",
+        },
+        {
+          question:
+            "What happens to CSS custom properties (variables) in media queries?",
+          options: [
+            "They cannot be used in media queries",
+            "They can be redefined and will update dynamically",
+            "They maintain their global scope value",
+            "They need to be prefixed differently",
+          ],
+          correct: 1,
+          difficulty: "Hard",
+        },
+        {
+          question:
+            "Which selector would style the first paragraph after an h2 element?",
+          options: ["h2 p", "h2 > p", "h2 + p", "h2 ~ p"],
+          correct: 2,
+          difficulty: "Hard",
+        },
+        {
+          question:
+            "What is the behavior of margin collapse when one margin is negative?",
+          options: [
+            "Margins are added together",
+            "The largest margin wins",
+            "The absolute largest margin wins",
+            "The positive and negative margins are subtracted",
+          ],
+          correct: 3,
+          difficulty: "Hard",
+        },
+        {
+          question: "Which statement about CSS custom properties is FALSE?",
+          options: [
+            "They can be updated via JavaScript",
+            "They can be scoped to specific elements",
+            "They are case-sensitive",
+            "They can hold multiple values without being comma-separated",
+          ],
+          correct: 3,
+          difficulty: "Hard",
+        },
+        {
+          question:
+            "What happens when you apply transform: scale(2) to an element with position: fixed?",
+          options: [
+            "The element scales from its center point",
+            "The element creates a new stacking context",
+            "The fixed positioning is ignored",
+            "The element scales from the viewport's center",
+          ],
+          correct: 1,
+          difficulty: "Hard",
+        },
+        {
+          question:
+            "Which combination of properties will center an element both horizontally and vertically in its parent?",
+          options: [
+            "margin: auto; position: relative;",
+            "position: absolute; top: 50%; left: 50%;",
+            "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);",
+            "display: flex; justify-content: center;",
+          ],
+          correct: 2,
+          difficulty: "Hard",
+        },
+      ];
+
+      // Game state variables
+      let currentQuestion = 0;
+      let score = 0;
+      let timer = 0;
+      let timerInterval;
+      let userAnswers = new Array(quizData.length).fill(null);
+      let isAnswered = false;
+
+      // Initialize the quiz
+      function initializeQuiz() {
+        displayQuestion();
+        startTimer();
+        updateStats();
+      }
+
+      // Display current question
+      function displayQuestion() {
+        const question = quizData[currentQuestion];
+        document.getElementById("question").textContent = question.question;
+
+        const optionsContainer = document.getElementById("options");
+        optionsContainer.innerHTML = "";
+
+        question.options.forEach((option, index) => {
+          const optionElement = document.createElement("div");
+          optionElement.className = "option";
+          optionElement.textContent = option;
+
+          if (userAnswers[currentQuestion] === index) {
+            optionElement.classList.add("selected");
+          }
+
+          optionElement.addEventListener("click", () => selectOption(index));
+          optionsContainer.appendChild(optionElement);
+        });
+
+        updateNavigationButtons();
+        updateProgress();
+      }
+
+      // Handle option selection
+      function selectOption(index) {
+        if (isAnswered) return;
+
+        const options = document.querySelectorAll(".option");
+        options.forEach((option) => option.classList.remove("selected"));
+        options[index].classList.add("selected");
+
+        userAnswers[currentQuestion] = index;
+        document.getElementById("nextBtn").disabled = false;
+        isAnswered = true;
+
+        // Show immediate feedback
+        const correctIndex = quizData[currentQuestion].correct;
+        options.forEach((option, i) => {
+          if (i === correctIndex) {
+            option.classList.add("correct");
+          } else if (i === index && i !== correctIndex) {
+            option.classList.add("incorrect");
+          }
+        });
+
+        // Update score
+        if (index === correctIndex) {
+          score += 10;
+          document.getElementById("score").textContent = score;
+        }
+      }
+
+      // Navigation functions
+      function nextQuestion() {
+        if (currentQuestion < quizData.length - 1) {
+          currentQuestion++;
+          isAnswered = false;
+          displayQuestion();
+        } else {
+          showResults();
+        }
+      }
+
+      function previousQuestion() {
+        if (currentQuestion > 0) {
+          currentQuestion--;
+          isAnswered = userAnswers[currentQuestion] !== null;
+          displayQuestion();
+        }
+      }
+
+      // Update UI elements
+      function updateProgress() {
+        const progress = ((currentQuestion + 1) / quizData.length) * 100;
+        document.getElementById("progress").style.width = `${progress}%`;
+        document.getElementById("questionNumber").textContent = `${
+          currentQuestion + 1
+        }/${quizData.length}`;
+      }
+
+      function updateNavigationButtons() {
+        document.getElementById("previousBtn").disabled = currentQuestion === 0;
+        document.getElementById("nextBtn").disabled =
+          userAnswers[currentQuestion] === null;
+      }
+
+      // Timer functions
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          timer++;
+          updateTimer();
+        }, 1000);
+      }
+
+      function updateTimer() {
+        const minutes = Math.floor(timer / 60);
+        const seconds = timer % 60;
+        const timeString = `${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+        document.getElementById("timer").textContent = timeString;
+      }
+
+      // Show final results
+      function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById("questionContainer").style.display = "none";
+        document.getElementById("results").style.display = "block";
+        document.querySelector(".quiz-footer").style.display = "none";
+
+        const correctCount = userAnswers.reduce(
+          (count, answer, index) =>
+            count + (answer === quizData[index].correct ? 1 : 0),
+          0
+        );
+
+        document.getElementById("finalScore").textContent = score;
+        document.getElementById(
+          "correctAnswers"
+        ).textContent = `${correctCount}/${quizData.length}`;
+        document.getElementById("timeTaken").textContent =
+          document.getElementById("timer").textContent;
+      }
+
+      // Restart quiz
+      function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        timer = 0;
+        userAnswers = new Array(quizData.length).fill(null);
+        isAnswered = false;
+
+        document.getElementById("questionContainer").style.display = "block";
+        document.getElementById("results").style.display = "none";
+        document.querySelector(".quiz-footer").style.display = "flex";
+        document.getElementById("score").textContent = "0";
+
+        initializeQuiz();
+      }
+
+      // Start the quiz when page loads
+      initializeQuiz();
+    </script>
+  </body>
+</html>

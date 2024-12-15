@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Experience Survey 2024</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Customer Experience Survey 2024</h1>
+      <p>Help us improve our services by providing your valuable feedback</p>
+
+      <form id="surveyForm" novalidate>
+        <!-- Personal Information -->
+        <section>
+          <h2>Personal Information</h2>
+
+          <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required />
+            <span class="error" id="fullNameError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required />
+            <span class="error" id="emailError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="ageGroup">Age Group:</label>
+            <select id="ageGroup" name="ageGroup" required>
+              <option value="">Select age group</option>
+              <option value="18-24">18-24 years</option>
+              <option value="25-34">25-34 years</option>
+              <option value="35-44">35-44 years</option>
+              <option value="45-54">45-54 years</option>
+              <option value="55+">55 years and above</option>
+            </select>
+            <span class="error" id="ageGroupError"></span>
+          </div>
+
+          <div class="form-group">
+            <label>Gender:</label>
+            <div class="radio-group">
+              <input
+                type="radio"
+                id="male"
+                name="gender"
+                value="male"
+                required
+              />
+              <label for="male">Male</label>
+              <input type="radio" id="female" name="gender" value="female" />
+              <label for="female">Female</label>
+              <input type="radio" id="other" name="gender" value="other" />
+              <label for="other">Other</label>
+              <input
+                type="radio"
+                id="prefer-not"
+                name="gender"
+                value="prefer-not"
+              />
+              <label for="prefer-not">Prefer not to say</label>
+            </div>
+            <span class="error" id="genderError"></span>
+          </div>
+        </section>
+
+        <!-- Product Experience -->
+        <section>
+          <h2>Product Experience</h2>
+
+          <div class="form-group">
+            <label for="purchaseDate">Date of Last Purchase:</label>
+            <input type="date" id="purchaseDate" name="purchaseDate" required />
+            <span class="error" id="purchaseDateError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="productCategory">Product Category:</label>
+            <select id="productCategory" name="productCategory" required>
+              <option value="">Select category</option>
+              <option value="smartphones">Smartphones</option>
+              <option value="laptops">Laptops</option>
+              <option value="accessories">Accessories</option>
+              <option value="mensWear">Men's Wear</option>
+              <option value="womensWear">Women's Wear</option>
+              <option value="kidsWear">Kids Wear</option>
+              <option value="furniture">Furniture</option>
+              <option value="homeDecor">Home Decor</option>
+              <option value="kitchen">Kitchen</option>
+            </select>
+            <span class="error" id="productCategoryError"></span>
+          </div>
+
+          <div class="form-group">
+            <label>Products Purchased:</label>
+            <div class="checkbox-group">
+              <input
+                type="checkbox"
+                id="product1"
+                name="products"
+                value="product1"
+              />
+              <label for="product1">Product 1</label>
+              <input
+                type="checkbox"
+                id="product2"
+                name="products"
+                value="product2"
+              />
+              <label for="product2">Product 2</label>
+              <input
+                type="checkbox"
+                id="product3"
+                name="products"
+                value="product3"
+              />
+              <label for="product3">Product 3</label>
+              <input
+                type="checkbox"
+                id="product4"
+                name="products"
+                value="product4"
+              />
+              <label for="product4">Product 4</label>
+            </div>
+            <span class="error" id="productsError"></span>
+          </div>
+        </section>
+
+        <!-- Detailed Feedback -->
+        <section>
+          <h2>Detailed Feedback</h2>
+
+          <div class="form-group">
+            <label>Product Quality Rating:</label>
+            <div class="rating-group">
+              <input
+                type="radio"
+                id="rating5"
+                name="rating"
+                value="5"
+                required
+              />
+              <label for="rating5">5</label>
+              <input type="radio" id="rating4" name="rating" value="4" />
+              <label for="rating4">4</label>
+              <input type="radio" id="rating3" name="rating" value="3" />
+              <label for="rating3">3</label>
+              <input type="radio" id="rating2" name="rating" value="2" />
+              <label for="rating2">2</label>
+              <input type="radio" id="rating1" name="rating" value="1" />
+              <label for="rating1">1</label>
+            </div>
+            <span class="error" id="ratingError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="deliveryExperience">Delivery Time Experience:</label>
+            <select id="deliveryExperience" name="deliveryExperience" required>
+              <option value="">Select experience</option>
+              <option value="excellent">Excellent</option>
+              <option value="good">Good</option>
+              <option value="average">Average</option>
+              <option value="poor">Poor</option>
+            </select>
+            <span class="error" id="deliveryExperienceError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="feedback">Detailed Feedback:</label>
+            <textarea
+              id="feedback"
+              name="feedback"
+              rows="4"
+              required
+            ></textarea>
+            <span class="error" id="feedbackError"></span>
+          </div>
+
+          <div class="form-group">
+            <label>Areas for Improvement:</label>
+            <div class="checkbox-group">
+              <input
+                type="checkbox"
+                id="improvementQuality"
+                name="improvements"
+                value="quality"
+              />
+              <label for="improvementQuality">Product Quality</label>
+              <input
+                type="checkbox"
+                id="improvementPrice"
+                name="improvements"
+                value="price"
+              />
+              <label for="improvementPrice">Price</label>
+              <input
+                type="checkbox"
+                id="improvementDelivery"
+                name="improvements"
+                value="delivery"
+              />
+              <label for="improvementDelivery">Delivery Service</label>
+              <input
+                type="checkbox"
+                id="improvementCustomerService"
+                name="improvements"
+                value="customerService"
+              />
+              <label for="improvementCustomerService">Customer Service</label>
+              <input
+                type="checkbox"
+                id="improvementWebsite"
+                name="improvements"
+                value="website"
+              />
+              <label for="improvementWebsite">Website Experience</label>
+              <input
+                type="checkbox"
+                id="improvementApp"
+                name="improvements"
+                value="app"
+              />
+              <label for="improvementApp">Mobile App Experience</label>
+            </div>
+            <span class="error" id="improvementsError"></span>
+          </div>
+        </section>
+
+        <!-- Contact Preferences -->
+        <section>
+          <h2>Contact Preferences</h2>
+
+          <div class="form-group">
+            <label for="contactTime">Preferred Contact Time:</label>
+            <select id="contactTime" name="contactTime" required>
+              <option value="">Select preferred time</option>
+              <option value="morning">Morning (9 AM - 12 PM)</option>
+              <option value="afternoon">Afternoon (12 PM - 5 PM)</option>
+              <option value="evening">Evening (5 PM - 8 PM)</option>
+            </select>
+            <span class="error" id="contactTimeError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              pattern="[0-9]{10}"
+              required
+            />
+            <span class="error" id="phoneError"></span>
+          </div>
+
+          <div class="form-group">
+            <label>Contact Method:</label>
+            <div class="radio-group">
+              <input
+                type="radio"
+                id="contactEmail"
+                name="contactMethod"
+                value="email"
+                required
+              />
+              <label for="contactEmail">Email</label>
+              <input
+                type="radio"
+                id="contactPhone"
+                name="contactMethod"
+                value="phone"
+              />
+              <label for="contactPhone">Phone</label>
+              <input
+                type="radio"
+                id="contactNone"
+                name="contactMethod"
+                value="none"
+              />
+              <label for="contactNone">No Contact</label>
+            </div>
+            <span class="error" id="contactMethodError"></span>
+          </div>
+        </section>
+
+        <!-- Additional Information -->
+        <section>
+          <h2>Additional Information</h2>
+
+          <div class="form-group">
+            <label for="receipt">Upload Receipt (optional):</label>
+            <input
+              type="file"
+              id="receipt"
+              name="receipt"
+              accept=".pdf,.jpg,.jpeg,.png"
+            />
+            <span class="error" id="receiptError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="favoriteColor">Favorite Website Color:</label>
+            <input type="color" id="favoriteColor" name="favoriteColor" />
+          </div>
+        </section>
+
+        <div class="form-group">
+          <button type="submit">Submit Survey</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("surveyForm");
+        const errorMessages = {
+          required: "This field is required.",
+          email: "Please enter a valid email address.",
+          phone: "Please enter a valid 10-digit phone number.",
+          minLength: "Please enter at least {min} characters.",
+          maxLength: "Please enter no more than {max} characters.",
+          fileSize: "File size must be less than 5MB.",
+          fileType: "Please upload a PDF or image file.",
+          checkbox: "Please select at least one option.",
+          date: "Please select a valid date not in the future.",
+        };
+
+        // Validate specific fields
+        const validators = {
+          email: function (value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(value);
+          },
+          phone: function (value) {
+            const phoneRegex = /^\d{10}$/;
+            return phoneRegex.test(value);
+          },
+          date: function (value) {
+            const selectedDate = new Date(value);
+            const today = new Date();
+            return selectedDate <= today;
+          },
+          file: function (file) {
+            if (!file) return true; // Optional field
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+            return file.size <= maxSize && allowedTypes.includes(file.type);
+          },
+        };
+
+        // Show error message
+        function showError(element, message) {
+          const errorElement = document.getElementById(element.id + "Error");
+          if (errorElement) {
+            errorElement.textContent = message;
+            element.classList.add("invalid");
+          }
+        }
+
+        // Clear error message
+        function clearError(element) {
+          const errorElement = document.getElementById(element.id + "Error");
+          if (errorElement) {
+            errorElement.textContent = "";
+            element.classList.remove("invalid");
+          }
+        }
+
+        // Validate form field
+        function validateField(element) {
+          clearError(element);
+
+          // Required field validation
+          if (element.required && !element.value) {
+            showError(element, errorMessages.required);
+            return false;
+          }
+
+          // Email validation
+          if (element.type === "email" && element.value) {
+            if (!validators.email(element.value)) {
+              showError(element, errorMessages.email);
+              return false;
+            }
+          }
+
+          // Phone validation
+          if (element.type === "tel" && element.value) {
+            if (!validators.phone(element.value)) {
+              showError(element, errorMessages.phone);
+              return false;
+            }
+          }
+
+          // Date validation
+          if (element.type === "date" && element.value) {
+            if (!validators.date(element.value)) {
+              showError(element, "Please select a date not in the future");
+              return false;
+            }
+          }
+
+          // File validation
+          if (element.type === "file" && element.files.length > 0) {
+            if (!validators.file(element.files[0])) {
+              showError(
+                element,
+                errorMessages.fileSize + " " + errorMessages.fileType
+              );
+              return false;
+            }
+          }
+
+          // Checkbox group validation
+          if (element.type === "checkbox" && element.name === "products") {
+            const checkboxes = document.querySelectorAll(
+              'input[name="products"]:checked'
+            );
+            if (checkboxes.length === 0) {
+              showError(element, errorMessages.checkbox);
+              return false;
+            }
+          }
+
+          return true;
+        }
+
+        // Add input event listeners for real-time validation
+        form.querySelectorAll("input, select, textarea").forEach((element) => {
+          element.addEventListener("input", () => validateField(element));
+          element.addEventListener("blur", () => validateField(element));
+        });
+
+        // Form submission
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          let isValid = true;
+
+          // Validate all fields
+          form
+            .querySelectorAll("input, select, textarea")
+            .forEach((element) => {
+              if (!validateField(element)) {
+                isValid = false;
+              }
+            });
+
+          if (isValid) {
+            // Here you would typically send the form data to your server
+            alert("Form submitted successfully!");
+            form.reset();
+          } else {
+            // Scroll to the first error
+            const firstError = form.querySelector(".error:not(:empty)");
+            if (firstError) {
+              firstError.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Board</title>
+    <style>
+      /* Modern CSS Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f5f7;
+        padding: 20px;
+      }
+
+      /* Header Styles */
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #172b4d;
+      }
+
+      /* Main Board Layout */
+      .kanban-board {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        min-height: 80vh;
+      }
+
+      /* Column Styles */
+      .column {
+        background: #ebecf0;
+        border-radius: 8px;
+        width: 300px;
+        padding: 1rem;
+        min-height: 500px;
+      }
+
+      .column-header {
+        margin-bottom: 1rem;
+        font-weight: bold;
+        color: #172b4d;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Task Card Styles */
+      .task {
+        background: white;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        cursor: grab;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .task:hover {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .task.dragging {
+        opacity: 0.5;
+        cursor: grabbing;
+      }
+
+      /* Add Task Button Styles */
+      .add-task-btn {
+        background: none;
+        border: none;
+        color: #5e6c84;
+        padding: 0.5rem;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .add-task-btn:hover {
+        background: #dfe1e6;
+        color: #172b4d;
+      }
+
+      /* Task Input Form */
+      .task-form {
+        display: none;
+        margin-bottom: 0.5rem;
+      }
+
+      .task-input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 2px solid #dfe1e6;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+      }
+
+      .task-form-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .submit-btn,
+      .cancel-btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .submit-btn {
+        background: #0079bf;
+        color: white;
+      }
+
+      .cancel-btn {
+        background: #ebecf0;
+        color: #172b4d;
+      }
+
+      /* Drag and Drop Visual Feedback */
+      .drag-over {
+        background: #dfe1e6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Kanban Board</h1>
+      <p>Drag and drop tasks between columns</p>
+    </div>
+
+    <div class="kanban-board">
+      <div class="column" data-column="todo">
+        <div class="column-header">
+          <span>To Do</span>
+        </div>
+        <div class="tasks">
+          <div class="task" draggable="true">Create project plan</div>
+          <div class="task" draggable="true">Research competitors</div>
+        </div>
+        <button class="add-task-btn">+ Add a task</button>
+        <div class="task-form">
+          <textarea
+            class="task-input"
+            placeholder="Enter task description..."
+          ></textarea>
+          <div class="task-form-buttons">
+            <button class="submit-btn">Add Task</button>
+            <button class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="column" data-column="inProgress">
+        <div class="column-header">
+          <span>In Progress</span>
+        </div>
+        <div class="tasks">
+          <div class="task" draggable="true">Design mockups</div>
+        </div>
+        <button class="add-task-btn">+ Add a task</button>
+        <div class="task-form">
+          <textarea
+            class="task-input"
+            placeholder="Enter task description..."
+          ></textarea>
+          <div class="task-form-buttons">
+            <button class="submit-btn">Add Task</button>
+            <button class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="column" data-column="done">
+        <div class="column-header">
+          <span>Done</span>
+        </div>
+        <div class="tasks">
+          <div class="task" draggable="true">Initial setup</div>
+        </div>
+        <button class="add-task-btn">+ Add a task</button>
+        <div class="task-form">
+          <textarea
+            class="task-input"
+            placeholder="Enter task description..."
+          ></textarea>
+          <div class="task-form-buttons">
+            <button class="submit-btn">Add Task</button>
+            <button class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize drag and drop functionality
+      document.addEventListener("DOMContentLoaded", () => {
+        // Store the currently dragged task
+        let draggedTask = null;
+
+        // Get all tasks and add drag event listeners
+        const tasks = document.querySelectorAll(".task");
+        tasks.forEach((task) => {
+          initializeTaskDragAndDrop(task);
+        });
+
+        // Initialize column drop zones
+        const columns = document.querySelectorAll(".column");
+        columns.forEach((column) => {
+          initializeColumnDropZone(column);
+        });
+
+        // Initialize "Add Task" functionality
+        const addTaskButtons = document.querySelectorAll(".add-task-btn");
+        addTaskButtons.forEach((button) => {
+          initializeAddTaskButton(button);
+        });
+
+        // Function to initialize drag and drop for a task
+        function initializeTaskDragAndDrop(task) {
+          task.addEventListener("dragstart", (e) => {
+            draggedTask = task;
+            task.classList.add("dragging");
+            // Set data transfer for compatibility
+            e.dataTransfer.setData("text/plain", "");
+          });
+
+          task.addEventListener("dragend", () => {
+            task.classList.remove("dragging");
+            draggedTask = null;
+          });
+        }
+
+        // Function to initialize column drop zones
+        function initializeColumnDropZone(column) {
+          column.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            column.classList.add("drag-over");
+          });
+
+          column.addEventListener("dragleave", () => {
+            column.classList.remove("drag-over");
+          });
+
+          column.addEventListener("drop", (e) => {
+            e.preventDefault();
+            column.classList.remove("drag-over");
+
+            if (draggedTask) {
+              const tasksContainer = column.querySelector(".tasks");
+              tasksContainer.appendChild(draggedTask);
+              saveBoard(); // Save board state after dropping
+            }
+          });
+        }
+
+        // Function to initialize add task button functionality
+        function initializeAddTaskButton(button) {
+          const column = button.closest(".column");
+          const form = column.querySelector(".task-form");
+          const input = form.querySelector(".task-input");
+          const submitBtn = form.querySelector(".submit-btn");
+          const cancelBtn = form.querySelector(".cancel-btn");
+
+          button.addEventListener("click", () => {
+            button.style.display = "none";
+            form.style.display = "block";
+            input.focus();
+          });
+
+          submitBtn.addEventListener("click", () => {
+            const taskText = input.value.trim();
+            if (taskText) {
+              const newTask = createTask(taskText);
+              column.querySelector(".tasks").appendChild(newTask);
+              saveBoard(); // Save board state after adding
+            }
+            resetForm(button, form, input);
+          });
+
+          cancelBtn.addEventListener("click", () => {
+            resetForm(button, form, input);
+          });
+        }
+
+        // Helper function to create a new task element
+        function createTask(text) {
+          const task = document.createElement("div");
+          task.className = "task";
+          task.draggable = true;
+          task.textContent = text;
+          initializeTaskDragAndDrop(task);
+          return task;
+        }
+
+        // Helper function to reset the add task form
+        function resetForm(button, form, input) {
+          input.value = "";
+          form.style.display = "none";
+          button.style.display = "block";
+        }
+
+        // Save board state to localStorage
+        function saveBoard() {
+          const boardState = {};
+          document.querySelectorAll(".column").forEach((column) => {
+            const columnId = column.dataset.column;
+            const tasks = Array.from(column.querySelectorAll(".task")).map(
+              (task) => task.textContent
+            );
+            boardState[columnId] = tasks;
+          });
+          localStorage.setItem("kanbanBoard", JSON.stringify(boardState));
+        }
+
+        // Load board state from localStorage
+        function loadBoard() {
+          const savedState = localStorage.getItem("kanbanBoard");
+          if (savedState) {
+            const boardState = JSON.parse(savedState);
+            Object.entries(boardState).forEach(([columnId, tasks]) => {
+              const column = document.querySelector(
+                `[data-column="${columnId}"]`
+              );
+              const tasksContainer = column.querySelector(".tasks");
+              tasksContainer.innerHTML = "";
+              tasks.forEach((taskText) => {
+                const task = createTask(taskText);
+                tasksContainer.appendChild(task);
+              });
+            });
+          }
+        }
+
+        // Load saved board state on page load
+        loadBoard();
+      });
+    </script>
+  </body>
+</html>

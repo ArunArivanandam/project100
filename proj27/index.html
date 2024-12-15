@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task List Manager</title>
+    <style>
+      /* Modern, clean styling for better user experience */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background-color: #f5f7fa;
+        color: #2d3436;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #2d3436;
+        margin-bottom: 20px;
+      }
+
+      /* Form styling */
+      .task-form {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .task-input {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid #dfe6e9;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+      }
+
+      .task-input:focus {
+        outline: none;
+        border-color: #74b9ff;
+      }
+
+      .add-btn {
+        padding: 12px 24px;
+        background-color: #74b9ff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      .add-btn:hover {
+        background-color: #0984e3;
+      }
+
+      /* Task list styling */
+      .task-list {
+        list-style: none;
+      }
+
+      .task-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #f8fafc;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        transition: transform 0.2s ease;
+      }
+
+      .task-item:hover {
+        transform: translateX(5px);
+      }
+
+      .task-checkbox {
+        margin-right: 15px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .task-text {
+        flex: 1;
+        font-size: 16px;
+      }
+
+      .task-text.completed {
+        text-decoration: line-through;
+        color: #b2bec3;
+      }
+
+      .delete-btn {
+        padding: 8px 12px;
+        background-color: #ff7675;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+      }
+
+      .delete-btn:hover {
+        background-color: #d63031;
+      }
+
+      /* Filter controls */
+      .filter-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        background-color: #dfe6e9;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .filter-btn.active {
+        background-color: #74b9ff;
+        color: white;
+      }
+
+      /* Stats section */
+      .task-stats {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid #dfe6e9;
+        color: #636e72;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Task List Manager</h1>
+
+      <!-- Filter controls for task visibility -->
+      <div class="filter-controls">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="active">Active</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+      </div>
+
+      <!-- Form for adding new tasks -->
+      <form class="task-form">
+        <input
+          type="text"
+          class="task-input"
+          placeholder="Enter a new task..."
+          required
+        />
+        <button type="submit" class="add-btn">Add Task</button>
+      </form>
+
+      <!-- List container for tasks -->
+      <ul class="task-list"></ul>
+
+      <!-- Statistics section -->
+      <div class="task-stats">
+        <p>Total Tasks: <span class="total-tasks">0</span></p>
+        <p>Completed Tasks: <span class="completed-tasks">0</span></p>
+      </div>
+    </div>
+
+    <script>
+      // Task Manager Class - Handles all task-related operations
+      class TaskManager {
+        constructor() {
+          // Initialize tasks from localStorage or empty array
+          this.tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+          this.currentFilter = "all";
+
+          // DOM Elements
+          this.taskForm = document.querySelector(".task-form");
+          this.taskInput = document.querySelector(".task-input");
+          this.taskList = document.querySelector(".task-list");
+          this.filterButtons = document.querySelectorAll(".filter-btn");
+          this.totalTasksSpan = document.querySelector(".total-tasks");
+          this.completedTasksSpan = document.querySelector(".completed-tasks");
+
+          // Bind event listeners
+          this.bindEvents();
+
+          // Initial render
+          this.renderTasks();
+          this.updateStats();
+        }
+
+        // Set up event listeners
+        bindEvents() {
+          // Form submission for new tasks
+          this.taskForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            this.addTask();
+          });
+
+          // Filter button clicks
+          this.filterButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              this.setFilter(btn.dataset.filter);
+            });
+          });
+        }
+
+        // Add a new task
+        addTask() {
+          const taskText = this.taskInput.value.trim();
+
+          if (taskText) {
+            // Create new task object
+            const task = {
+              id: Date.now(),
+              text: taskText,
+              completed: false,
+              createdAt: new Date(),
+            };
+
+            // Add to tasks array
+            this.tasks.unshift(task);
+
+            // Clear input and update display
+            this.taskInput.value = "";
+            this.saveTasks();
+            this.renderTasks();
+            this.updateStats();
+          }
+        }
+
+        // Toggle task completion status
+        toggleTask(id) {
+          this.tasks = this.tasks.map((task) => {
+            if (task.id === id) {
+              return { ...task, completed: !task.completed };
+            }
+            return task;
+          });
+
+          this.saveTasks();
+          this.renderTasks();
+          this.updateStats();
+        }
+
+        // Delete a task
+        deleteTask(id) {
+          this.tasks = this.tasks.filter((task) => task.id !== id);
+          this.saveTasks();
+          this.renderTasks();
+          this.updateStats();
+        }
+
+        // Set the current filter
+        setFilter(filterType) {
+          this.currentFilter = filterType;
+
+          // Update active filter button
+          this.filterButtons.forEach((btn) => {
+            btn.classList.toggle("active", btn.dataset.filter === filterType);
+          });
+
+          this.renderTasks();
+        }
+
+        // Get filtered tasks based on current filter
+        getFilteredTasks() {
+          switch (this.currentFilter) {
+            case "active":
+              return this.tasks.filter((task) => !task.completed);
+            case "completed":
+              return this.tasks.filter((task) => task.completed);
+            default:
+              return this.tasks;
+          }
+        }
+
+        // Render tasks to DOM
+        renderTasks() {
+          const filteredTasks = this.getFilteredTasks();
+
+          this.taskList.innerHTML = filteredTasks
+            .map(
+              (task) => `
+                    <li class="task-item" data-id="${task.id}">
+                        <input 
+                            type="checkbox" 
+                            class="task-checkbox" 
+                            ${task.completed ? "checked" : ""}
+                        >
+                        <span class="task-text ${
+                          task.completed ? "completed" : ""
+                        }">
+                            ${this.escapeHtml(task.text)}
+                        </span>
+                        <button class="delete-btn">Delete</button>
+                    </li>
+                `
+            )
+            .join("");
+
+          // Add event listeners to new elements
+          this.addTaskEventListeners();
+        }
+
+        // Add event listeners to task items
+        addTaskEventListeners() {
+          this.taskList.querySelectorAll(".task-item").forEach((item) => {
+            const id = parseInt(item.dataset.id);
+
+            // Checkbox click
+            item
+              .querySelector(".task-checkbox")
+              .addEventListener("change", () => {
+                this.toggleTask(id);
+              });
+
+            // Delete button click
+            item.querySelector(".delete-btn").addEventListener("click", () => {
+              this.deleteTask(id);
+            });
+          });
+        }
+
+        // Update task statistics
+        updateStats() {
+          this.totalTasksSpan.textContent = this.tasks.length;
+          this.completedTasksSpan.textContent = this.tasks.filter(
+            (task) => task.completed
+          ).length;
+        }
+
+        // Save tasks to localStorage
+        saveTasks() {
+          localStorage.setItem("tasks", JSON.stringify(this.tasks));
+        }
+
+        // Escape HTML to prevent XSS
+        escapeHtml(unsafe) {
+          return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+      }
+
+      // Initialize the Task Manager when the page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        new TaskManager();
+      });
+    </script>
+  </body>
+</html>

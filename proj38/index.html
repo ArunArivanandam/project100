@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechWatch Pro - The Future on Your Wrist</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script>
+      // First, add the jsPDF library to your HTML
+      document.addEventListener("DOMContentLoaded", () => {
+        // Add jsPDF script dynamically
+        const jsPDFScript = document.createElement("script");
+        jsPDFScript.src =
+          "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+        document.head.appendChild(jsPDFScript);
+
+        // Previous functionality remains the same
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute("href")).scrollIntoView({
+              behavior: "smooth",
+            });
+          });
+        });
+
+        // Enhanced order form handling with PDF generation
+        const orderForm = document.querySelector("#order-form");
+        if (orderForm) {
+          orderForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            // Basic form validation
+            const required = [
+              "full-name",
+              "email",
+              "phone",
+              "select-model",
+              "quantity",
+            ];
+            let isValid = true;
+            let formData = {};
+
+            required.forEach((field) => {
+              const input = this.querySelector(`[name="${field}"]`);
+              if (!input || !input.value.trim()) {
+                isValid = false;
+                input?.classList.add("error");
+              } else {
+                formData[field] = input.value;
+                input.classList.remove("error");
+              }
+            });
+
+            if (isValid) {
+              // Calculate total
+              const quantity = parseInt(formData.quantity);
+              const price = formData["select-model"].includes("Premium")
+                ? 299
+                : 199;
+              const total = quantity * price;
+
+              // Generate and show PDF
+              generateOrderPDF(formData, total);
+
+              // Show order confirmation
+              showOrderConfirmation(formData, total);
+            } else {
+              showAlert("Please fill in all required fields");
+            }
+          });
+        }
+
+        // Price calculator functionality remains the same
+        const quantityInput = document.querySelector('input[name="quantity"]');
+        const modelSelect = document.querySelector(
+          'select[name="select-model"]'
+        );
+        if (quantityInput && modelSelect) {
+          const updateTotal = () => {
+            const quantity = parseInt(quantityInput.value) || 0;
+            const price = modelSelect.value.includes("Premium") ? 299 : 199;
+            const total = quantity * price;
+
+            const totalElement =
+              document.querySelector(".order-total") || createTotalElement();
+            totalElement.textContent = `Total: $${total.toLocaleString()}`;
+          };
+
+          quantityInput.addEventListener("input", updateTotal);
+          modelSelect.addEventListener("change", updateTotal);
+        }
+
+        // Feature cards animation remains the same
+        const featureCards = document.querySelectorAll(".feature-card");
+        featureCards.forEach((card) => {
+          card.addEventListener("mouseenter", () => {
+            card.style.transform = "translateY(-10px)";
+            card.style.transition = "transform 0.3s ease";
+          });
+
+          card.addEventListener("mouseleave", () => {
+            card.style.transform = "translateY(0)";
+          });
+        });
+
+        // PDF Generation Function
+        function generateOrderPDF(formData, total) {
+          // Ensure jsPDF is loaded
+          if (typeof window.jspdf === "undefined") {
+            console.error("jsPDF library not loaded");
+            return;
+          }
+
+          // Create new PDF document
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          // Add company logo/header
+          doc.setFontSize(20);
+          doc.text("TechWatch Pro", 105, 20, { align: "center" });
+
+          // Add order details
+          doc.setFontSize(16);
+          doc.text("Order Confirmation", 20, 40);
+
+          doc.setFontSize(12);
+          doc.text("Order Details:", 20, 60);
+          doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 70);
+          doc.text(`Order ID: ${generateOrderId()}`, 20, 80);
+
+          // Customer information
+          doc.text("Customer Information:", 20, 100);
+          doc.text(`Name: ${formData["full-name"]}`, 20, 110);
+          doc.text(`Email: ${formData.email}`, 20, 120);
+          doc.text(`Phone: ${formData.phone}`, 20, 130);
+
+          // Product details
+          doc.text("Product Details:", 20, 150);
+          doc.text(`Model: ${formData["select-model"]}`, 20, 160);
+          doc.text(`Quantity: ${formData.quantity}`, 20, 170);
+          doc.text(
+            `Price per unit: $${
+              formData["select-model"].includes("Premium") ? "299" : "199"
+            }`,
+            20,
+            180
+          );
+          doc.text(`Total Amount: $${total.toLocaleString()}`, 20, 190);
+
+          // Special requirements if any
+          const specialReq = document.querySelector(
+            '[name="special-requirements"]'
+          ).value;
+          if (specialReq) {
+            doc.text("Special Requirements:", 20, 210);
+            doc.setFontSize(10);
+            const splitText = doc.splitTextToSize(specialReq, 170);
+            doc.text(splitText, 20, 220);
+          }
+
+          // Footer
+          doc.setFontSize(10);
+          doc.text("Thank you for choosing TechWatch Pro!", 105, 280, {
+            align: "center",
+          });
+
+          // Save the PDF
+          doc.save(`TechWatch_Order_${generateOrderId()}.pdf`);
+        }
+
+        // Helper functions
+        function generateOrderId() {
+          return (
+            "TW" +
+            Date.now().toString().slice(-8) +
+            Math.random().toString(36).substring(2, 5).toUpperCase()
+          );
+        }
+
+        function showOrderConfirmation(formData, total) {
+          const modal = document.createElement("div");
+          modal.className = "modal";
+          modal.innerHTML = `
+            <div class="modal-content">
+                <h3>Order Confirmation</h3>
+                <p>Thank you for your order, ${formData["full-name"]}!</p>
+                <p>Order ID: ${generateOrderId()}</p>
+                <p>Selected Model: ${formData["select-model"]}</p>
+                <p>Quantity: ${formData.quantity}</p>
+                <p>Total Amount: $${total.toLocaleString()}</p>
+                <p>We'll send the confirmation to: ${formData.email}</p>
+                <p class="pdf-note">Your order confirmation PDF has been downloaded.</p>
+                <button onclick="this.closest('.modal').remove()">Close</button>
+            </div>
+        `;
+          document.body.appendChild(modal);
+        }
+
+        function showAlert(message) {
+          const alert = document.createElement("div");
+          alert.className = "alert";
+          alert.textContent = message;
+          document.body.appendChild(alert);
+          setTimeout(() => alert.remove(), 3000);
+        }
+
+        function createTotalElement() {
+          const totalElement = document.createElement("div");
+          totalElement.className = "order-total";
+          const form = document.querySelector("#order-form");
+          form.insertBefore(
+            totalElement,
+            form.querySelector('[type="submit"]')
+          );
+          return totalElement;
+        }
+      });
+
+      // Add some basic styles
+      const styles = `
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 500px;
+        width: 90%;
+    }
+    
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff4444;
+        color: white;
+        padding: 1rem;
+        border-radius: 4px;
+        animation: slideIn 0.3s ease;
+        z-index: 1000;
+    }
+    
+    .pdf-note {
+        color: #28a745;
+        font-weight: bold;
+        margin: 1rem 0;
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
+    }
+    
+    .error {
+        border-color: #ff4444 !important;
+    }
+`;
+
+      const styleSheet = document.createElement("style");
+      styleSheet.textContent = styles;
+      document.head.appendChild(styleSheet);
+      // Add required libraries to your HTML
+      document.addEventListener("DOMContentLoaded", () => {
+        // Add required scripts dynamically
+        const scripts = [
+          "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js",
+          "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js",
+        ];
+
+        scripts.forEach((src) => {
+          const script = document.createElement("script");
+          script.src = src;
+          document.head.appendChild(script);
+        });
+
+        // Previous smooth scrolling and feature card code remains the same...
+
+        // Enhanced order form handling with advanced PDF
+        const orderForm = document.querySelector("#order-form");
+        if (orderForm) {
+          orderForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            if (validateForm(this)) {
+              const formData = collectFormData(this);
+              const total = calculateTotal(formData);
+              const orderId = generateOrderId();
+
+              // Show preview modal first
+              showPDFPreview(formData, total, orderId);
+            }
+          });
+        }
+
+        // Form validation function
+        function validateForm(form) {
+          const required = [
+            "full-name",
+            "email",
+            "phone",
+            "select-model",
+            "quantity",
+          ];
+          let isValid = true;
+
+          required.forEach((field) => {
+            const input = form.querySelector(`[name="${field}"]`);
+            if (!input || !input.value.trim()) {
+              isValid = false;
+              input?.classList.add("error");
+              showFieldError(input, "This field is required");
+            } else {
+              input.classList.remove("error");
+              removeFieldError(input);
+            }
+          });
+
+          // Validate email format
+          const email = form.querySelector('[name="email"]');
+          if (email && !isValidEmail(email.value)) {
+            isValid = false;
+            email.classList.add("error");
+            showFieldError(email, "Please enter a valid email address");
+          }
+
+          // Validate phone format
+          const phone = form.querySelector('[name="phone"]');
+          if (phone && !isValidPhone(phone.value)) {
+            isValid = false;
+            phone.classList.add("error");
+            showFieldError(phone, "Please enter a valid phone number");
+          }
+
+          if (!isValid) {
+            showAlert("Please correct the errors in the form");
+          }
+
+          return isValid;
+        }
+
+        // Generate advanced PDF with QR code and barcode
+        async function generateAdvancedPDF(formData, total, orderId) {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
+          });
+
+          // Add styling
+          doc.setDrawColor(0);
+          doc.setFillColor(240, 240, 240);
+          doc.rect(0, 0, 210, 30, "F");
+
+          // Header
+          doc.setFontSize(24);
+          doc.setTextColor(44, 62, 80);
+          doc.text("TechWatch Pro", 105, 20, { align: "center" });
+
+          // Order information
+          doc.setFontSize(16);
+          doc.setTextColor(52, 73, 94);
+          doc.text("Order Confirmation", 20, 45);
+
+          // Generate QR Code
+          const qr = qrcode(0, "M");
+          qr.addData(
+            JSON.stringify({
+              orderId,
+              customer: formData["full-name"],
+              model: formData["select-model"],
+              total,
+            })
+          );
+          qr.make();
+          const qrImage = qr.createDataURL(4);
+          doc.addImage(qrImage, "PNG", 150, 40, 40, 40);
+
+          // Add barcode
+          const canvas = document.createElement("canvas");
+          JsBarcode(canvas, orderId, {
+            format: "CODE128",
+            width: 2,
+            height: 50,
+          });
+          doc.addImage(canvas.toDataURL(), "PNG", 20, 55, 80, 20);
+
+          // Order details section
+          doc.setDrawColor(52, 73, 94);
+          doc.setLineWidth(0.5);
+          doc.line(20, 85, 190, 85);
+
+          doc.setFontSize(12);
+          doc.text("Order Details", 20, 95);
+          doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 105);
+          doc.text(`Order ID: ${orderId}`, 20, 115);
+
+          // Customer information
+          doc.text("Customer Information", 20, 135);
+          doc.setFontSize(11);
+          doc.text(`Name: ${formData["full-name"]}`, 25, 145);
+          doc.text(`Email: ${formData.email}`, 25, 155);
+          doc.text(`Phone: ${formData.phone}`, 25, 165);
+
+          // Product details with table
+          doc.setFontSize(12);
+          doc.text("Product Details", 20, 185);
+
+          // Create table
+          const tableData = [
+            ["Model", "Quantity", "Price", "Total"],
+            [
+              formData["select-model"],
+              formData.quantity,
+              `$${
+                formData["select-model"].includes("Premium") ? "299" : "199"
+              }`,
+              `$${total.toLocaleString()}`,
+            ],
+          ];
+
+          let yPos = 195;
+          tableData.forEach((row, i) => {
+            let xPos = 25;
+            row.forEach((cell) => {
+              doc.text(cell.toString(), xPos, yPos);
+              xPos += 40;
+            });
+            yPos += 10;
+          });
+
+          // Special requirements
+          const specialReq = document.querySelector(
+            '[name="special-requirements"]'
+          ).value;
+          if (specialReq) {
+            doc.setFontSize(12);
+            doc.text("Special Requirements", 20, 225);
+            doc.setFontSize(10);
+            const splitText = doc.splitTextToSize(specialReq, 150);
+            doc.text(splitText, 25, 235);
+          }
+
+          // Footer
+          doc.setDrawColor(52, 73, 94);
+          doc.setLineWidth(0.5);
+          doc.line(20, 270, 190, 270);
+
+          doc.setFontSize(10);
+          doc.text("Thank you for choosing TechWatch Pro!", 105, 280, {
+            align: "center",
+          });
+          doc.text(
+            "This is a computer-generated document and needs no signature.",
+            105,
+            285,
+            { align: "center" }
+          );
+
+          return doc;
+        }
+
+        // Show PDF preview modal
+        async function showPDFPreview(formData, total, orderId) {
+          const doc = await generateAdvancedPDF(formData, total, orderId);
+          const pdfData = doc.output("datauristring");
+
+          const modal = document.createElement("div");
+          modal.className = "modal pdf-preview-modal";
+          modal.innerHTML = `
+            <div class="modal-content">
+                <h3>Order Preview</h3>
+                <div class="pdf-container">
+                    <iframe src="${pdfData}" width="100%" height="500px"></iframe>
+                </div>
+                <div class="button-group">
+                    <button class="submit-btn download-btn">Download PDF</button>
+                    <button class="submit-btn edit-btn">Edit Order</button>
+                    <button class="close-btn">Close</button>
+                </div>
+            </div>
+        `;
+
+          document.body.appendChild(modal);
+
+          // Add event listeners
+          modal.querySelector(".download-btn").addEventListener("click", () => {
+            doc.save(`TechWatch_Order_${orderId}.pdf`);
+            showOrderConfirmation(formData, total, orderId);
+            modal.remove();
+          });
+
+          modal.querySelector(".edit-btn").addEventListener("click", () => {
+            modal.remove();
+          });
+
+          modal.querySelector(".close-btn").addEventListener("click", () => {
+            modal.remove();
+          });
+        }
+
+        // Helper functions
+        function collectFormData(form) {
+          const formData = {};
+          [
+            "full-name",
+            "email",
+            "phone",
+            "select-model",
+            "quantity",
+            "special-requirements",
+          ].forEach((field) => {
+            formData[field] = form.querySelector(`[name="${field}"]`).value;
+          });
+          return formData;
+        }
+
+        function calculateTotal(formData) {
+          const quantity = parseInt(formData.quantity);
+          const price = formData["select-model"].includes("Premium")
+            ? 299
+            : 199;
+          return quantity * price;
+        }
+
+        function isValidEmail(email) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidPhone(phone) {
+          return /^\+?[\d\s-]{10,}$/.test(phone);
+        }
+
+        function showFieldError(input, message) {
+          const errorDiv = document.createElement("div");
+          errorDiv.className = "error-message";
+          errorDiv.textContent = message;
+          input.parentNode.appendChild(errorDiv);
+        }
+
+        function removeFieldError(input) {
+          const errorDiv = input.parentNode.querySelector(".error-message");
+          if (errorDiv) {
+            errorDiv.remove();
+          }
+        }
+
+        // Previous helper functions remain the same...
+      });
+
+      // Enhanced styles
+      const styles = `
+    
+
+    .pdf-preview-modal .modal-content {
+        max-width: 800px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .pdf-container {
+        margin: 1rem 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+
+    .download-btn {
+        background: #28a745;
+    }
+
+    .edit-btn {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .close-btn {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+`;
+
+      // Previous style injection remains the same...
+    </script>
+  </head>
+  <body>
+    <nav class="nav-content">
+      <img src="logo.png" alt="TechWatch Logo" class="logo" />
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#specifications">Specifications</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <main role="main">
+      <section id="hero" class="section">
+        <div class="hero-content">
+          <h1>TechWatch Pro</h1>
+          <h2>The Future on Your Wrist</h2>
+          <img
+            src="watch.jpg"
+            alt="TechWatch Pro Smart Watch"
+            class="hero-image"
+          />
+          <p>Experience the perfect blend of style and technology</p>
+          <a href="#pricing" class="submit-btn">Buy Now</a>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <h2>Key Features</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Health Monitoring</h3>
+            <p>Track your vitals 24/7</p>
+          </div>
+          <div class="feature-card">
+            <h3>GPS Tracking</h3>
+            <p>Navigate with precision</p>
+          </div>
+          <div class="feature-card">
+            <h3>Water Resistant</h3>
+            <p>IP68 rated protection</p>
+          </div>
+          <div class="feature-card">
+            <h3>7-Day Battery Life</h3>
+            <p>Long-lasting performance</p>
+          </div>
+          <div class="feature-card">
+            <h3>Smart Notifications</h3>
+            <p>Stay connected always</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="specifications" class="section">
+        <h2>Technical Specifications</h2>
+        <table class="specs-table">
+          <tr>
+            <td>Display</td>
+            <td>1.4" AMOLED</td>
+          </tr>
+          <tr>
+            <td>Battery</td>
+            <td>400mAh</td>
+          </tr>
+          <tr>
+            <td>Water Rating</td>
+            <td>IP68</td>
+          </tr>
+          <tr>
+            <td>Connectivity</td>
+            <td>Bluetooth 5.0</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="pricing" class="section">
+        <h2>Choose Your Model</h2>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Standard Edition</h3>
+            <div class="price">$199</div>
+            <ul>
+              <li>Basic Health Tracking</li>
+              <li>Notifications</li>
+              <li>1-year warranty</li>
+            </ul>
+            <a href="#contact" class="submit-btn" data-model="standard"
+              >Order Now</a
+            >
+          </div>
+
+          <div class="pricing-card">
+            <h3>Premium Edition</h3>
+            <div class="price">$299</div>
+            <ul>
+              <li>Advanced Health Metrics</li>
+              <li>GPS Included</li>
+              <li>2-year warranty</li>
+            </ul>
+            <a href="#contact" class="submit-btn" data-model="premium"
+              >Order Now</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <h2>Order Now</h2>
+        <form id="order-form">
+          <div class="form-group">
+            <label for="full-name">Full Name:</label>
+            <input type="text" id="full-name" name="full-name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required />
+          </div>
+
+          <div class="form-group">
+            <label for="select-model">Select Model:</label>
+            <select id="select-model" name="select-model" required>
+              <option value="">Choose a model</option>
+              <option value="Standard Edition">Standard Edition - $199</option>
+              <option value="Premium Edition">Premium Edition - $299</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              min="1"
+              value="1"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="special-requirements">Special Requirements:</label>
+            <textarea
+              id="special-requirements"
+              name="special-requirements"
+            ></textarea>
+          </div>
+
+          <div class="order-total"></div>
+          <button type="submit" class="submit-btn">Place Order</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2024 TechWatch Pro. All rights reserved.</p>
+      <nav>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Service</a>
+        <a href="#support">Support</a>
+      </nav>
+    </footer>
+
+    <!-- Add JavaScript -->
+    <script src="watch-site-features.js"></script>
+  </body>
+</html>

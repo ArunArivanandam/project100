@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #ecf2f8;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.testimonial-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 20px;
+}
+
+.testimonial-card {
+  background: white;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card.featured {
+  grid-column: span 2;
+  background: #733fc8;
+  color: white;
+}
+
+.testimonial-card.tall {
+  grid-row: span 2;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+.profile-info h4 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.profile-info p {
+  opacity: 0.5;
+  font-size: 14px;
+}
+
+.quote-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.quote-text {
+  opacity: 0.7;
+  font-size: 15px;
+}
+
+@media (max-width: 1024px) {
+  .testimonial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-card.featured {
+    grid-column: span 1;
+  }
+}

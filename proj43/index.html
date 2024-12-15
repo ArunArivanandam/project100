@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Theme Changer</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        margin: 0;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .theme-controls {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .theme-button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+      }
+
+      .theme-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .theme-button.light {
+        background: #ffffff;
+        color: #2d3748;
+        border: 1px solid #e2e8f0;
+      }
+
+      .theme-button.dark {
+        background: #1a202c;
+        color: #e2e8f0;
+      }
+
+      .theme-button.sepia {
+        background: #f4f1ea;
+        color: #433422;
+      }
+
+      .theme-button.forest {
+        background: #f0f4f0;
+        color: #2f3e2f;
+      }
+
+      .theme-button.ocean {
+        background: #f0f7ff;
+        color: #2c5282;
+      }
+
+      .markdown-content {
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="theme-controls">
+        <button
+          class="theme-button light"
+          onclick="themeChanger.applyTheme('light')"
+        >
+          Light Theme
+        </button>
+        <button
+          class="theme-button dark"
+          onclick="themeChanger.applyTheme('dark')"
+        >
+          Dark Theme
+        </button>
+        <button
+          class="theme-button sepia"
+          onclick="themeChanger.applyTheme('sepia')"
+        >
+          Sepia Theme
+        </button>
+        <button
+          class="theme-button forest"
+          onclick="themeChanger.applyTheme('forest')"
+        >
+          Forest Theme
+        </button>
+        <button
+          class="theme-button ocean"
+          onclick="themeChanger.applyTheme('ocean')"
+        >
+          Ocean Theme
+        </button>
+      </div>
+
+      <div id="markdown-container" class="markdown-content">
+        <h1>Markdown Theme Demo</h1>
+
+        <h2>Typography Examples</h2>
+        <p>
+          This is a paragraph with <strong>bold text</strong> and
+          <em>italic text</em>.
+        </p>
+
+        <h3>Code Examples</h3>
+        <p>Inline code looks like this: <code>const x = 42;</code></p>
+
+        <pre><code>// Code block example
+function greeting(name) {
+    return `Hello, ${name}!`;
+}</code></pre>
+
+        <h3>Links and Blockquotes</h3>
+        <p>Here's a <a href="#">sample link</a> to demonstrate link styling.</p>
+
+        <blockquote>
+          This is a blockquote. It demonstrates how quoted text appears in
+          different themes.
+        </blockquote>
+
+        <h3>Lists</h3>
+        <ul>
+          <li>Unordered list item 1</li>
+          <li>Unordered list item 2</li>
+          <li>Unordered list item 3</li>
+        </ul>
+
+        <ol>
+          <li>Ordered list item 1</li>
+          <li>Ordered list item 2</li>
+          <li>Ordered list item 3</li>
+        </ol>
+      </div>
+    </div>
+
+    <script>
+      // Theme definitions
+      const themes = {
+        light: {
+          background: "#ffffff",
+          text: "#2d3748",
+          heading: "#1a202c",
+          link: "#3182ce",
+          code: "#805ad5",
+          blockquote: "#718096",
+          border: "#e2e8f0",
+        },
+        dark: {
+          background: "#1a202c",
+          text: "#e2e8f0",
+          heading: "#f7fafc",
+          link: "#63b3ed",
+          code: "#b794f4",
+          blockquote: "#a0aec0",
+          border: "#4a5568",
+        },
+        sepia: {
+          background: "#f4f1ea",
+          text: "#433422",
+          heading: "#2c1810",
+          link: "#1a4731",
+          code: "#723b13",
+          blockquote: "#735745",
+          border: "#d3cec4",
+        },
+        forest: {
+          background: "#f0f4f0",
+          text: "#2f3e2f",
+          heading: "#1a2f1a",
+          link: "#2d5a27",
+          code: "#445c3c",
+          blockquote: "#5c715c",
+          border: "#c5d1c5",
+        },
+        ocean: {
+          background: "#f0f7ff",
+          text: "#2c5282",
+          heading: "#1a365d",
+          link: "#2b6cb0",
+          code: "#4299e1",
+          blockquote: "#4a5568",
+          border: "#bee3f8",
+        },
+      };
+
+      class MarkdownThemeChanger {
+        constructor(markdownContainerId) {
+          this.container = document.getElementById(markdownContainerId);
+          this.currentTheme = "light";
+
+          this.styleElement = document.createElement("style");
+          document.head.appendChild(this.styleElement);
+
+          this.applyTheme("light");
+        }
+
+        applyTheme(themeName) {
+          if (!themes[themeName]) {
+            console.error(`Theme "${themeName}" not found`);
+            return;
+          }
+
+          const theme = themes[themeName];
+          this.currentTheme = themeName;
+
+          const css = `
+                    .markdown-content {
+                        background-color: ${theme.background};
+                        color: ${theme.text};
+                        transition: all 0.3s ease;
+                    }
+
+                    .markdown-content h1,
+                    .markdown-content h2,
+                    .markdown-content h3,
+                    .markdown-content h4,
+                    .markdown-content h5,
+                    .markdown-content h6 {
+                        color: ${theme.heading};
+                    }
+
+                    .markdown-content a {
+                        color: ${theme.link};
+                    }
+
+                    .markdown-content code {
+                        color: ${theme.code};
+                        background-color: ${this.adjustColor(
+                          theme.background,
+                          -10
+                        )};
+                        padding: 2px 4px;
+                        border-radius: 4px;
+                    }
+
+                    .markdown-content blockquote {
+                        color: ${theme.blockquote};
+                        border-left: 4px solid ${theme.border};
+                        padding-left: 1rem;
+                        margin-left: 0;
+                    }
+
+                    .markdown-content pre {
+                        background-color: ${this.adjustColor(
+                          theme.background,
+                          -5
+                        )};
+                        border: 1px solid ${theme.border};
+                        border-radius: 4px;
+                        padding: 1rem;
+                        overflow-x: auto;
+                    }
+
+                    .markdown-content pre code {
+                        background-color: transparent;
+                        padding: 0;
+                        color: ${theme.text};
+                    }
+                `;
+
+          this.styleElement.textContent = css;
+        }
+
+        adjustColor(color, amount) {
+          const hex = color.replace("#", "");
+          const num = parseInt(hex, 16);
+          let r = (num >> 16) + amount;
+          let g = ((num >> 8) & 0x00ff) + amount;
+          let b = (num & 0x0000ff) + amount;
+
+          r = Math.clamp(r, 0, 255);
+          g = Math.clamp(g, 0, 255);
+          b = Math.clamp(b, 0, 255);
+
+          return `#${(b | (g << 8) | (r << 16)).toString(16).padStart(6, "0")}`;
+        }
+      }
+
+      Math.clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+      // Initialize the theme changer
+      const themeChanger = new MarkdownThemeChanger("markdown-container");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Favorite Books</title>
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+        padding: 2rem;
+      }
+
+      /* Header Styles */
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+      }
+
+      /* Search Container Styles */
+      .search-container {
+        max-width: 800px;
+        margin: 0 auto 2rem;
+        display: flex;
+        gap: 1rem;
+      }
+
+      #searchInput {
+        flex: 1;
+        padding: 0.5rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+      #sortSelect {
+        padding: 0.5rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: white;
+      }
+
+      /* Book Section Styles */
+      .book-section {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .book-section h2 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .book-section h3 {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      .book-section img {
+        max-width: 200px;
+        height: auto;
+        display: block;
+        margin: 1rem 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .book-section p {
+        margin-bottom: 1rem;
+        max-height: 100px;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+
+      /* Rating Styles */
+      .rating {
+        margin: 1rem 0;
+        color: #f39c12;
+      }
+
+      .stars {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+      }
+
+      .review-count {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      /* Button Styles */
+      .read-more-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.3s;
+      }
+
+      .read-more-btn:hover {
+        background-color: #2980b9;
+      }
+
+      .scroll-top-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+      }
+
+      .scroll-top-btn:hover {
+        opacity: 1;
+      }
+
+      /* Reading Section Styles */
+      .reading-section {
+        background: #2c3e50;
+        color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        margin-top: 3rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .reading-section h4 {
+        color: #ecf0f1;
+        margin-bottom: 1rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem;
+        }
+
+        .book-section {
+          padding: 1rem;
+        }
+
+        .search-container {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Favorite Books</h1>
+
+    <div class="book-section">
+      <h2>Harry Potter and the Sorcerer's Stone</h2>
+      <h3>by J.K. Rowling</h3>
+      <p>
+        An orphaned boy learns on his eleventh birthday that he is a wizard. He
+        is brought to Hogwarts School of Witchcraft and Wizardry to begin his
+        magical education. Along the way he makes new friends, encounters
+        magical creatures, and uncovers mysteries of the wizarding world.
+      </p>
+      <img src="book.jpg" alt="Harry Potter Book Cover" />
+    </div>
+
+    <div class="book-section">
+      <h2>The Hobbit</h2>
+      <h3>by J.R.R. Tolkien</h3>
+      <p>
+        Bilbo Baggins is a hobbit who enjoys a comfortable life in his
+        hobbit-hole at Bag End. However, his peaceful life changes when the
+        wizard Gandalf and a company of dwarves arrives on his doorstep to whisk
+        him away on an adventure.
+      </p>
+      <img src="book1.jpg" alt="The Hobbit Book Cover" />
+    </div>
+
+    <div class="book-section">
+      <h2>Pride and Prejudice</h2>
+      <h3>by Jane Austen</h3>
+      <p>
+        The story follows the main character Elizabeth Bennet as she deals with
+        issues of manners, upbringing, morality, education, and marriage in the
+        society of the landed gentry of early 19th-century England.
+      </p>
+      <img src="book2.jpg" alt="Pride and Prejudice Book Cover" />
+    </div>
+
+    <div class="reading-section">
+      <h4>Why I Love Reading</h4>
+      <p>
+        Reading takes me on amazing adventures and helps me learn about
+        different worlds and perspectives. These books are some of my favorites
+        because each one tells a unique and engaging story.
+      </p>
+    </div>
+
+    <script>
+      // Book data structure
+      const books = [
+        {
+          title: "Harry Potter and the Sorcerer's Stone",
+          author: "J.K. Rowling",
+          description:
+            "An orphaned boy learns on his eleventh birthday that he is a wizard...",
+          coverImage: "book.jpg",
+          rating: 4.8,
+          reviews: 987,
+          readMore: false,
+        },
+        {
+          title: "The Hobbit",
+          author: "J.R.R. Tolkien",
+          description:
+            "Bilbo Baggins is a hobbit who enjoys a comfortable life in his hobbit-hole at Bag End...",
+          coverImage: "book1.jpg",
+          rating: 4.7,
+          reviews: 856,
+          readMore: false,
+        },
+        {
+          title: "Pride and Prejudice",
+          author: "Jane Austen",
+          description:
+            "The story follows the main character Elizabeth Bennet as she deals with issues of manners...",
+          coverImage: "book2.jpg",
+          rating: 4.6,
+          reviews: 765,
+          readMore: false,
+        },
+      ];
+
+      // DOM Elements
+      document.addEventListener("DOMContentLoaded", () => {
+        initializeBookSections();
+        addInteractiveFeatures();
+        setupSearchAndFilter();
+      });
+
+      function initializeBookSections() {
+        const bookSections = document.querySelectorAll(".book-section");
+
+        bookSections.forEach((section, index) => {
+          // Add rating and review count
+          const ratingElement = document.createElement("div");
+          ratingElement.className = "rating";
+          ratingElement.innerHTML = `
+                    <span class="stars">${generateStars(
+                      books[index].rating
+                    )}</span>
+                    <span class="review-count">(${
+                      books[index].reviews
+                    } reviews)</span>
+                `;
+          section.appendChild(ratingElement);
+
+          // Add read more/less button
+          const readMoreBtn = document.createElement("button");
+          readMoreBtn.className = "read-more-btn";
+          readMoreBtn.textContent = "Read More";
+          readMoreBtn.addEventListener("click", () => toggleDescription(index));
+          section.appendChild(readMoreBtn);
+
+          // Add hover effect
+          section.addEventListener("mouseenter", () => {
+            section.style.transform = "scale(1.02)";
+            section.style.transition = "transform 0.3s ease";
+          });
+          section.addEventListener("mouseleave", () => {
+            section.style.transform = "scale(1)";
+          });
+        });
+      }
+
+      function addInteractiveFeatures() {
+        // Add smooth scroll to reading section
+        const readingSection = document.querySelector(".reading-section");
+        readingSection.innerHTML += `
+                <button class="scroll-top-btn" onclick="scrollToTop()">
+                    Back to Top
+                </button>
+            `;
+      }
+
+      function setupSearchAndFilter() {
+        // Add search bar
+        const searchBar = document.createElement("div");
+        searchBar.className = "search-container";
+        searchBar.innerHTML = `
+                <input type="text" id="searchInput" placeholder="Search books...">
+                <select id="sortSelect">
+                    <option value="title">Sort by Title</option>
+                    <option value="rating">Sort by Rating</option>
+                    <option value="reviews">Sort by Reviews</option>
+                </select>
+            `;
+        document.querySelector("h1").after(searchBar);
+
+        // Add event listeners
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", filterBooks);
+        document
+          .getElementById("sortSelect")
+          .addEventListener("change", sortBooks);
+      }
+
+      // Utility Functions
+      function generateStars(rating) {
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        let stars = "★".repeat(fullStars);
+        if (halfStar) stars += "½";
+        return stars;
+      }
+
+      function toggleDescription(index) {
+        const section = document.querySelectorAll(".book-section")[index];
+        const description = section.querySelector("p");
+        const button = section.querySelector(".read-more-btn");
+
+        books[index].readMore = !books[index].readMore;
+        if (books[index].readMore) {
+          description.style.maxHeight = description.scrollHeight + "px";
+          button.textContent = "Read Less";
+        } else {
+          description.style.maxHeight = "100px";
+          button.textContent = "Read More";
+        }
+      }
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      function filterBooks() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const bookSections = document.querySelectorAll(".book-section");
+
+        bookSections.forEach((section, index) => {
+          const title = books[index].title.toLowerCase();
+          const author = books[index].author.toLowerCase();
+          const matches =
+            title.includes(searchTerm) || author.includes(searchTerm);
+          section.style.display = matches ? "block" : "none";
+        });
+      }
+
+      function sortBooks() {
+        const sortBy = document.getElementById("sortSelect").value;
+        const bookList = document.querySelector("body");
+        const bookSections = Array.from(
+          document.querySelectorAll(".book-section")
+        );
+
+        bookSections.sort((a, b) => {
+          const indexA = bookSections.indexOf(a);
+          const indexB = bookSections.indexOf(b);
+
+          switch (sortBy) {
+            case "rating":
+              return books[indexB].rating - books[indexA].rating;
+            case "reviews":
+              return books[indexB].reviews - books[indexA].reviews;
+            default:
+              return books[indexA].title.localeCompare(books[indexB].title);
+          }
+        });
+
+        bookSections.forEach((section) => bookList.appendChild(section));
+      }
+    </script>
+  </body>
+</html>
